@@ -144,3 +144,119 @@
     font-size: 1rem;
     color: var(--cinza-texto);
 }
+
+
+
+/* ==========================================
+   4. CARDS DE EVENTOS
+   ========================================== */
+
+/* Lista que organiza os cards em colunas.
+   O auto-fill coloca quantos cards couberem na linha,
+   cada um com no mínimo 260px de largura */
+.lista-eventos {
+    margin-top: 28px;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+/* Cartão de cada evento */
+.event-card {
+    padding: 20px;
+
+    background-color: var(--branco);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Etiqueta com a categoria */
+.event-categoria {
+    align-self: flex-start;
+    padding: 4px 10px;
+
+    background-color: #fce8e8;
+    color: var(--vermelho);
+
+    font-size: 12px;
+    font-weight: 600;
+
+    border-radius: 20px;
+}
+
+/* Textos de data, local e vagas */
+.event-info {
+    font-size: 14px;
+    color: var(--cinza-texto);
+}
+
+/* O margin-top: auto empurra o botão para o fim do card,
+   assim todos os botões ficam alinhados */
+.event-card .btn-principal {
+    margin-top: auto;
+}
+
+
+
+/* ==========================================
+   5. FILTROS (BUSCA, CATEGORIA E ORDENAÇÃO)
+   ========================================== */
+
+/* Linha que reúne a busca e os dois selects.
+   O flex-wrap faz os campos descerem para a linha
+   de baixo quando a tela fica pequena */
+.filtros {
+    margin-top: 28px;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* Campo de busca (ocupa o espaço que sobrar) */
+.filtro-busca {
+    flex: 1;
+    min-width: 220px;
+    padding: 12px 14px;
+
+    background-color: var(--branco);
+    border: 1px solid var(--cinza-borda);
+    border-radius: var(--raio);
+
+    font-size: 15px;
+    color: var(--texto);
+}
+
+/* Campos de seleção (categoria e ordenação) */
+.filtro-select {
+    padding: 12px 14px;
+
+    background-color: var(--branco);
+    border: 1px solid var(--cinza-borda);
+    border-radius: var(--raio);
+
+    font-size: 15px;
+    color: var(--texto);
+
+    cursor: pointer;
+}
+
+/* Borda vermelha quando o campo está selecionado */
+.filtro-busca:focus,
+.filtro-select:focus {
+    outline: none;
+    border-color: var(--vermelho);
+}
+
+/* Mensagem de "nenhum evento encontrado" */
+.sem-eventos {
+    margin-top: 28px;
+
+    font-size: 1rem;
+    color: var(--cinza-texto);
+}
