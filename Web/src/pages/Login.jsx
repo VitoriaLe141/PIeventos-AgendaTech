@@ -1,117 +1,186 @@
+
 /* ==========================================
    PÁGINA: Login
-   Tela de entrada do PIeventos.
-   O RA precisa ter exatamente 13 números.
-   Agora ela envia os dados para o servidor,
-   que confere no banco de dados MySQL.
+   Tela de entrada do AgendaTech.
+   O aluno informa seu RA e sua senha
+   para acessar a plataforma.
    ========================================== */
 
 import { useState } from "react";
 import CampoTexto from "../components/CampoTexto";
 import "../styles/login.css";
 
-// Tamanho do RA
+// Quantidade de números do RA
 const TAMANHO_RA = 13;
 
-// Endereço do meu servidor. Se um dia mudar, altero só aqui
-const URL_SERVIDOR = "http://localhost:3001";
+// Limite de caracteres da senha
+const TAMANHO_SENHA = 20;
 
-function Login() {
+// Endereço do backend
+const URL_SERVIDOR = "http://localhost:3000";
+
+function Login({ aoEntrar }) {
+
   /* ---------- VARIÁVEIS DE ESTADO ---------- */
+
   const [ra, setRa] = useState("");
   const [senha, setSenha] = useState("");
   const [mostrarSenha, setMostrarSenha] = useState(false);
-  const [erros, setErros] = useState({});
-  const [mensagem, setMensagem] = useState(""); // mensagem de sucesso
-  const [erroLogin, setErroLogin] = useState(""); // erro vindo do servidor
-  const [carregando, setCarregando] = useState(false); // true enquanto espera o servidor
 
-  /* ---------- CAMPO RA: só aceita números ---------- */
+  const [erros, setErros] = useState({});
+  const [erroLogin, setErroLogin] = useState("");
+  const [carregando, setCarregando] = useState(false);
+
+
+  /* ---------- CAMPO RA ---------- */
+
   function aoMudarRa(evento) {
+
+    // Permite somente números
     const somenteNumeros = evento.target.value.replace(/\D/g, "");
-    setRa(somenteNumeros);
+
+    // Limita o RA a 13 números
+    setRa(somenteNumeros.slice(0, TAMANHO_RA));
+
   }
 
+
+  /* ---------- CAMPO SENHA ---------- */
+
+  function aoMudarSenha(evento) {
+
+    // Permite somente números
+    const somenteNumeros = evento.target.value.replace(/\D/g, "");
+
+    // Limita a senha a 20 números
+    setSenha(somenteNumeros.slice(0, TAMANHO_SENHA));
+
+  }
+
+
   /* ---------- VALIDAÇÃO ---------- */
+
   function validar() {
+
     const novosErros = {};
 
     if (ra === "") {
-      novosErros.ra = "Informe o seu RA.";
+      novosErros.ra = "Informe seu RA.";
+
     } else if (ra.length !== TAMANHO_RA) {
-      novosErros.ra = `O RA deve ter exatamente ${TAMANHO_RA} números.`;
+      novosErros.ra = "O RA deve ter exatamente 13 números.";
     }
 
     if (senha === "") {
-      novosErros.senha = "Informe a sua senha.";
+      novosErros.senha = "Informe sua senha.";
     }
 
     return novosErros;
+
   }
 
-  /* ---------- ENVIO DO FORMULÁRIO ----------
-     Agora a função é "async" porque ela precisa ESPERAR
-     a resposta do servidor (isso leva um tempinho) */
+
+  /* ---------- ENVIO DO LOGIN ---------- */
+
   async function aoEnviar(evento) {
+
     evento.preventDefault();
-    setMensagem("");
+
+    // Limpa mensagens anteriores
     setErroLogin("");
 
-    // 1) Valido os campos aqui na tela primeiro
+    // Verifica os campos antes de enviar
     const novosErros = validar();
+
     setErros(novosErros);
 
     if (Object.keys(novosErros).length > 0) {
       return;
     }
 
-    // 2) Se está tudo certo, mando para o servidor
-    setCarregando(true); // desabilita o botão enquanto espera
+    // Inicia o carregamento
+    setCarregando(true);
 
     try {
-      // fetch faz o pedido ao servidor. O await espera a resposta chegar
+
+      // Envia o RA e a senha para o backend
       const resposta = await fetch(`${URL_SERVIDOR}/auth/login`, {
-        method: "POST", // envio dados, então uso POST
-        headers: { "Content-Type": "application/json" },
-        // JSON.stringify transforma o objeto em texto para viajar pela internet
-        body: JSON.stringify({ login: ra, password: senha }),
+
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          login: ra,
+          password: senha
+        })
+
       });
 
-      // Transformo a resposta do servidor de volta em objeto
+      // Recebe a resposta do servidor
       const dados = await resposta.json();
 
-      console.log("Status HTTP:", resposta.status);
-      console.log("JSON recebido:", dados);
-
+      // Verifica se o login foi recusado
       if (!resposta.ok) {
-        setErroLogin(dados.message || "RA ou senha incorretos.");
+
+        setErroLogin(dados.message || "Não foi possível entrar.");
+
         return;
       }
 
+      // Verifica se a autenticação foi realizada
       if (dados.message === "sucess") {
-        setMensagem(`Bem-vindo(a), ${dados.user.name}!`);
+
+        // Guarda o token de autenticação
+        sessionStorage.setItem("token", dados.data);
+
+        // Avisa ao App que o aluno entrou
+        aoEntrar();
       }
 
-
     } catch (erro) {
+
       console.error("Erro no login:", erro);
-      setErroLogin("Não consegui falar com o servidor. Ele está ligado?");
+
+      setErroLogin(
+        "Não foi possível conectar ao servidor. Tente novamente."
+      );
+
     } finally {
+
+      // Finaliza o carregamento
       setCarregando(false);
+
     }
+
   }
 
-  /* ---------- O QUE APARECE NA TELA ---------- */
+
+  /* ---------- TELA DO LOGIN ---------- */
+
   return (
+
     <div className="login-fundo">
+
       <div className="login-painel">
+
         <div className="login-topo">
+
           <div className="logo">PI</div>
+
           <h1>AgendaTech</h1>
+
           <p>Conectando você aos eventos da Fatec</p>
+
         </div>
 
+
         <form onSubmit={aoEnviar} noValidate>
+
+          {/* CAMPO RA */}
+
           <CampoTexto
             id="ra"
             rotulo="RA"
@@ -124,16 +193,25 @@ function Login() {
             modoTeclado="numeric"
           />
 
+
+          {/* CAMPO SENHA */}
+
           <div className="campo-senha">
+
             <CampoTexto
               id="senha"
               rotulo="Senha"
               tipo={mostrarSenha ? "text" : "password"}
               valor={senha}
-              aoMudar={(e) => setSenha(e.target.value)}
-              placeholder="Digite a sua senha"
+              aoMudar={aoMudarSenha}
+              placeholder="Digite sua senha"
               erro={erros.senha}
+              tamanhoMaximo={TAMANHO_SENHA}
+              modoTeclado="numeric"
             />
+
+
+            {/* BOTÃO PARA MOSTRAR OU ESCONDER A SENHA */}
 
             <button
               type="button"
@@ -142,9 +220,10 @@ function Login() {
               aria-label={mostrarSenha ? "Ocultar senha" : "Mostrar senha"}
             >
 
-
               {mostrarSenha ? (
-                /* Olho riscado: a senha está aparecendo */
+
+                /* Olho riscado: senha visível */
+
                 <svg
                   width="20"
                   height="20"
@@ -161,7 +240,8 @@ function Login() {
 
               ) : (
 
-                /* Olho aberto: a senha está escondida */
+                /* Olho aberto: senha escondida */
+
                 <svg
                   width="20"
                   height="20"
@@ -175,28 +255,48 @@ function Login() {
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
                   <circle cx="12" cy="12" r="3" />
                 </svg>
+
               )}
 
             </button>
+
           </div>
 
-          {/* disabled={carregando} impede clicar várias vezes enquanto espera.
-              O texto também muda para o usuário saber que está carregando */}
-          <button type="submit" className="btn-principal" disabled={carregando}>
+
+          {/* BOTÃO ENTRAR */}
+
+          <button
+            type="submit"
+            className="btn-principal"
+            disabled={carregando}
+          >
+
             {carregando ? "Entrando..." : "Entrar"}
+
           </button>
 
-          {/* Erro vindo do servidor (RA ou senha incorretos) */}
-          {erroLogin && <p className="msg-erro-login">{erroLogin}</p>}
 
-          {/* Mensagem de sucesso */}
-          {mensagem && <p className="msg-sucesso">{mensagem}</p>}
+          {/* MENSAGEM DE ERRO DO SERVIDOR */}
+
+          {erroLogin && (
+            <p className="msg-erro-login">
+              {erroLogin}
+            </p>
+          )}
+
         </form>
 
-        <footer className="login-rodape">AgendaTech © 2026</footer>
+
+        <footer className="login-rodape">
+          AgendaTech © 2026
+        </footer>
+
       </div>
+
     </div>
+
   );
+
 }
 
 export default Login;

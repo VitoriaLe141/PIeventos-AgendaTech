@@ -1,21 +1,35 @@
+
 /* ==========================================
    COMPONENTE PRINCIPAL: App
-   Ele decide qual página aparece na tela.
-   Por enquanto só tenho a de login, mas depois
-   vou colocar as outras páginas aqui.
+   Controla qual página será exibida.
+   O aluno começa no Login e, após entrar,
+   é direcionado para a página inicial.
    ========================================== */
 
-// Import página de login
-import Login from "./pages/Login";
+import { useState } from "react";
 
-// Import página inicial
-import PaginaInicial from "./pages/PaginaInicial";  
+// Importa as páginas do projeto
+import Login from "./pages/Login";
+import PaginaInicial from "./pages/PaginaInicial";
 
 function App() {
-  // Aqui eu uso a página como se fosse uma tag HTML
-  // (troquei para a página inicial só para testar o visual)
-  return <PaginaInicial />;
+
+  // Controla se o aluno está autenticado
+  const [logado, setLogado] = useState(false);
+
+  // Se o aluno estiver logado, abre a página inicial
+  if (logado) {
+    return <PaginaInicial />;
+  }
+
+  // Se não estiver logado, mostra a tela de Login
+  return (
+    <Login
+      aoEntrar={() => setLogado(true)}
+    />
+  );
+
 }
 
-// Exporto o App para o main.jsx conseguir usar
+// Exporta o componente principal
 export default App;
