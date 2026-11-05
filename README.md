@@ -23,7 +23,6 @@ Projeto desenvolvido por estudantes da FATEC como parte das atividades acadêmic
 
 **Integrantes da equipe:**
 
-- Laura Francini Emerich
 - Sara Lorraine Martins
 - Vitória Letícia Fernandes
 - Yasmin Rodrigues Astori
