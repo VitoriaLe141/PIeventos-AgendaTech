@@ -1,16 +1,16 @@
 ### Variáveis Globais
-@baseUrl = http://localhost:3001
-@name = teste
+@baseUrl = http://localhost:3000
+@name = Aluno Teste
 @email = 1234567890123
-@password = 123
+@password = 123456
 
-### 1. Criar um novo usuário (Sign Up)
+### Cadastro
 POST {{baseUrl}}/auth/register
 Content-Type: application/json
 
 {
-    "name": " {{name}}",
-    "login" : "{{email}}",
+    "name": "{{name}}",
+    "login": "{{email}}",
     "password": "{{password}}"
 }
 
