@@ -12,7 +12,11 @@
 import { useState } from "react";
 
 // Importação dos estilos
-import "../styles/paginainicial.css";
+// (o nome do arquivo precisa ter as mesmas letras maiúsculas: paginaInicial.css)
+import "../styles/paginaInicial.css";
+
+// Importação dos dados (a lista de eventos agora fica em data/eventos.js)
+import { eventos, transformarEmData } from "../data/eventos";
 
 // Importação dos componentes
 import Sidebar from "../components/Sidebar";
@@ -21,77 +25,18 @@ import EventFilters from "../components/EventFilters";
 import EventCard from "../components/EventCard";
 
 
-/* Lista de eventos de exemplo.
-   Por enquanto eu escrevo os eventos aqui mesmo,
-   depois eles vão vir do banco de dados. */
-const eventos = [
-  {
-    id: 1,
-    titulo: "Semana de Tecnologia",
-    categoria: "Palestra",
-    data: "12/11/2026",
-    local: "Auditório",
-    vagas: 40,
-  },
-  {
-    id: 2,
-    titulo: "Workshop de React",
-    categoria: "Workshop",
-    data: "18/11/2026",
-    local: "Laboratório 3",
-    vagas: 20,
-  },
-  {
-    id: 3,
-    titulo: "Feira de Projetos",
-    categoria: "Feira",
-    data: "25/11/2026",
-    local: "Pátio",
-    vagas: 100,
-  },
-  {
-    id: 4,
-    titulo: "Palestra de Carreira em TI",
-    categoria: "Palestra",
-    data: "05/11/2026",
-    local: "Auditório",
-    vagas: 60,
-  },
-  {
-    id: 5,
-    titulo: "Workshop de Banco de Dados",
-    categoria: "Workshop",
-    data: "20/11/2026",
-    local: "Laboratório 1",
-    vagas: 15,
-  },
-  {
-    id: 6,
-    titulo: "Feira de Estágios",
-    categoria: "Feira",
-    data: "30/11/2026",
-    local: "Pátio",
-    vagas: 80,
-  },
-];
-
-
-/* Função auxiliar: transforma "12/11/2026" em uma data de verdade.
-   Eu preciso disso para o computador conseguir comparar qual
-   data vem antes da outra na hora de ordenar. */
-function transformarEmData(texto) {
-  // split separa o texto nas barras: ["12", "11", "2026"]
-  const partes = texto.split("/");
-  const dia = partes[0];
-  const mes = partes[1];
-  const ano = partes[2];
-
-  // Os meses começam do 0 no JavaScript (janeiro = 0), por isso mes - 1
-  return new Date(ano, mes - 1, dia);
-}
-
-
-function PaginaInicial() {
+/* Props (todas vêm do App):
+   - favoritos / inscricoes: ids dos eventos favoritados e inscritos
+   - aoFavoritar / aoInscrever: funções para marcar ou desmarcar
+   - aoNavegar / aoSair: funções do menu lateral */
+function PaginaInicial({
+  favoritos,
+  inscricoes,
+  aoFavoritar,
+  aoInscrever,
+  aoNavegar,
+  aoSair,
+}) {
   /* ---------- VARIÁVEIS DE ESTADO ---------- */
   const [busca, setBusca] = useState("");          // texto da busca
   const [categoria, setCategoria] = useState("Todas"); // categoria escolhida
@@ -146,7 +91,11 @@ function PaginaInicial() {
   return (
     <div className="pagina-inicial">
       {/* Menu lateral */}
-      <Sidebar />
+      <Sidebar
+        paginaAtual="inicio"
+        aoNavegar={aoNavegar}
+        aoSair={aoSair}
+      />
 
       {/* Conteúdo principal (ao lado da sidebar) */}
       <main className="conteudo">
@@ -172,6 +121,10 @@ function PaginaInicial() {
               data={evento.data}
               local={evento.local}
               vagas={evento.vagas}
+              favorito={favoritos.includes(evento.id)}
+              inscrito={inscricoes.includes(evento.id)}
+              aoFavoritar={() => aoFavoritar(evento.id)}
+              aoInscrever={() => aoInscrever(evento.id)}
             />
           ))}
         </section>

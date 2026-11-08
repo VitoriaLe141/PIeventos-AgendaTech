@@ -1,0 +1,150 @@
+/* ==========================================
+   ESTILOS DAS PÁGINAS INTERNAS
+   Favoritos, Minhas inscrições e Meu perfil.
+
+   ========================================== */
+
+
+/* ==========================================
+   1. MENSAGEM DE LISTA VAZIA
+   ========================================== */
+
+/* Caixa branca centralizada com texto e botão */
+.estado-vazio {
+  margin-top: 1.75rem;
+  padding: 2.5rem 1.25rem;
+
+  background-color: var(--branco);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+
+  /* Texto e botão um embaixo do outro, no centro */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  text-align: center;
+  color: var(--cinza-texto);
+}
+
+/* O .btn-principal ocupa 100% da largura.
+   Aqui eu deixo só do tamanho do texto */
+.btn-auto {
+  width: auto;
+  padding: 0.75rem 1.75rem;
+}
+
+/* Frase de resumo acima da lista de inscrições */
+.resumo {
+  margin-top: 1.75rem;
+  font-size: 1rem;
+  color: var(--cinza-texto);
+}
+
+/* Número em destaque, em vermelho */
+.resumo strong {
+  color: var(--vermelho);
+}
+
+
+/* ==========================================
+   2. MEU PERFIL
+   ========================================== */
+
+/* Cartão branco com os dados do aluno.
+   O max-width impede que ele fique largo demais em telas grandes */
+.perfil-card {
+  max-width: 40rem;
+  margin-top: 1.75rem;
+  padding: 1.75rem;
+
+  background-color: var(--branco);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+}
+
+/* Foto + nome, com uma linha separando dos dados.*/
+.perfil-topo {
+  display: flex;
+  align-items: center;
+  gap: 1.125rem;
+
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--cinza-borda);
+}
+
+/* Foto redonda. O 50% deixa a imagem em formato de círculo */
+.perfil-avatar {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+}
+
+.perfil-topo h2 {
+  font-size: 1.4rem;
+}
+
+.perfil-topo span {
+  font-size: 0.875rem;
+  color: var(--cinza-texto);
+}
+
+/* Dados em colunas. O auto-fit coloca quantas couberem
+   e, no celular, vira uma coluna só */
+.perfil-dados {
+  margin-top: 1.25rem;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
+  gap: 1.125rem;
+}
+
+/* Nome do dado (RA, Curso...) em cinza */
+.perfil-dado dt {
+  font-size: 0.8125rem;
+  color: var(--cinza-texto);
+}
+
+/* Valor do dado. O overflow-wrap quebra e-mails muito grandes */
+.perfil-dado dd {
+  margin-top: 0.125rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+/* Duas caixinhas com os números (inscrições e favoritos).
+   O "1fr 1fr" divide o espaço em duas partes iguais (fr = fração) */
+.perfil-numeros {
+  max-width: 40rem;
+  margin-top: 1.25rem;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+
+.perfil-numero {
+  padding: 1.25rem;
+
+  background-color: var(--branco);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+
+  text-align: center;
+}
+
+/* Número grande em vermelho */
+.perfil-numero strong {
+  display: block;
+  font-size: 2rem;
+  color: var(--vermelho);
+}
+
+
+.perfil-numero span {
+  font-size: 0.875rem;
+  color: var(--cinza-texto);
+}

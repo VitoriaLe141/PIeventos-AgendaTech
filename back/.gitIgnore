@@ -1,7 +1,0 @@
-# Ignorar a pasta 'node_modules'
-node_modules/
-
-# Bancos de dados locais
-*.db
-
-.env

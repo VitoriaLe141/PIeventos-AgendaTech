@@ -1,0 +1,10 @@
+# Ignorar a pasta node_modules
+node_modules/
+
+# Bancos de dados locais
+*.db
+
+# Arquivos de configuração e segredos
+.env
+.env.*
+!.env.example

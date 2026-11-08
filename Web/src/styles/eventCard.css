@@ -1,0 +1,68 @@
+/* ==========================================
+   ESTILOS EXTRAS DO CARD DE EVENTO
+   Coração de favorito e botão de cancelar.
+   ========================================== */
+
+/* O card vira a "referência" para o coração ficar no canto dele */
+.event-card {
+  position: relative;
+}
+
+/* Botão do coração (canto de cima, à direita) */
+.btn-favorito {
+  position: absolute;
+  top: 0.875rem;
+  right: 0.875rem;
+
+  /* Área clicável do botão */
+  width: 2.25rem;
+  height: 2.25rem;
+
+  /* Centraliza o desenho do coração */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: transparent;
+  border: none;
+  border-radius: 50%; 
+
+  color: var(--cinza-texto);
+  cursor: pointer;
+
+  transition: background 0.2s, color 0.2s;
+}
+
+
+.btn-favorito svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.btn-favorito:hover {
+  background: #fce8e8;
+  color: var(--vermelho);
+}
+
+/* Coração vermelho quando o evento é favorito */
+.btn-favorito.ativo {
+  color: var(--vermelho);
+}
+
+/* Mostra onde o botão está quando usamos o teclado.*/
+.btn-favorito:focus-visible {
+  outline: 2px solid var(--vermelho);
+  outline-offset: 2px;
+}
+
+/* Botão "Cancelar inscrição": branco com borda vermelha,
+   para parecer diferente do botão de se inscrever.*/
+.btn-principal.btn-cancelar {
+  background: var(--branco);
+  color: var(--vermelho);
+  border: 1px solid var(--vermelho);
+}
+
+.btn-principal.btn-cancelar:hover {
+  background: #fce8e8;
+}

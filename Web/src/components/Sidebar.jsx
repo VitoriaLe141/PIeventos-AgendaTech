@@ -11,7 +11,34 @@ import logo from "../assets/imagens/logo.svg";
 import avatar from "../assets/imagens/avatar-default.svg";
 
 
-function Sidebar() {
+/* Lista dos links do menu.
+   O "id" é o nome da página que o App vai abrir. */
+const links = [
+  { id: "inicio", texto: "Início" },
+  { id: "perfil", texto: "Meu perfil" },
+  { id: "favoritos", texto: "Favoritos" },
+  { id: "inscricoes", texto: "Minhas inscrições" },
+];
+
+
+/* Props:
+   - paginaAtual: id da página aberta (para destacar o link)
+   - aoNavegar: função que troca de página
+   - aoSair: função que faz o logout */
+function Sidebar({ paginaAtual, aoNavegar, aoSair }) {
+
+  // Troca de página sem recarregar o site
+  function irParaPagina(evento, id) {
+    // preventDefault evita que o href="#" suba a página para o topo
+    evento.preventDefault();
+    aoNavegar(id);
+  }
+
+  function sair(evento) {
+    evento.preventDefault();
+    aoSair();
+  }
+
   return (
     <aside className="sidebar">
       {/* Logo do AgendaTech */}
@@ -33,28 +60,25 @@ function Sidebar() {
         </div>
       </div>
 
-      {/* Menu de navegação */}
+      {/* Menu de navegação: o map cria um link para cada item da lista */}
       <nav className="sidebar-navigation">
-        <a href="#" className="sidebar-link active">
-          Início
-        </a>
-
-        <a href="#" className="sidebar-link">
-          Meu perfil
-        </a>
-
-        <a href="#" className="sidebar-link">
-          Favoritos
-        </a>
-
-        <a href="#" className="sidebar-link">
-          Minhas inscrições
-        </a>
+        {links.map((link) => (
+          <a
+            key={link.id}
+            href="#"
+            className={
+              paginaAtual === link.id ? "sidebar-link active" : "sidebar-link"
+            }
+            onClick={(evento) => irParaPagina(evento, link.id)}
+          >
+            {link.texto}
+          </a>
+        ))}
       </nav>
 
       {/* Opção de sair */}
       <div className="sidebar-footer">
-        <a href="#" className="sidebar-link">
+        <a href="#" className="sidebar-link" onClick={sair}>
           Sair
         </a>
       </div>
