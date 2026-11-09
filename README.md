@@ -1,4 +1,4 @@
-# PIeventos
+# PIeventos - AgendaTech
 
 ## 1. Sobre o projeto
 
