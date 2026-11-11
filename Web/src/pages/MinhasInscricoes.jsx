@@ -17,14 +17,15 @@ import Sidebar from "../components/Sidebar";
 import EventCard from "../components/EventCard";
 
 
-function MinhasInscricoes({
-  favoritos,
-  inscricoes,
-  aoFavoritar,
-  aoInscrever,
-  aoNavegar,
-  aoSair,
-}) {
+  function MinhasInscricoes({
+    usuario,
+    favoritos,
+    inscricoes,
+    aoFavoritar,
+    aoInscrever,
+    aoNavegar,
+    aoSair,
+  })  {
 
   // 1) Fica só com os eventos em que o aluno está inscrito
   const eventosInscritos = eventos.filter((evento) =>
@@ -41,6 +42,7 @@ function MinhasInscricoes({
       {/* Menu lateral (com o "Minhas inscrições" destacado) */}
       <Sidebar
         paginaAtual="inscricoes"
+        usuario={usuario}
         aoNavegar={aoNavegar}
         aoSair={aoSair}
       />

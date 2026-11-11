@@ -1,3 +1,4 @@
+
 /* ==========================================
    COMPONENTE: SIDEBAR
    Responsável pelo menu lateral do AgendaTech.
@@ -5,35 +6,52 @@
    e as opções de navegação.
    ========================================== */
 
-
 // Importação da logo e do avatar padrão
 import logo from "../assets/imagens/logo.svg";
 import avatar from "../assets/imagens/avatar-default.svg";
 
-
-/* Lista dos links do menu.
-   O "id" é o nome da página que o App vai abrir. */
-const links = [
+// Lista dos links disponíveis para o aluno
+const linksAluno = [
   { id: "inicio", texto: "Início" },
   { id: "perfil", texto: "Meu perfil" },
   { id: "favoritos", texto: "Favoritos" },
   { id: "inscricoes", texto: "Minhas inscrições" },
 ];
 
+// Lista dos links disponíveis para o professor
+const linksProfessor = [
+  { id: "inicio", texto: "Início" },
+  { id: "cadastrar", texto: "Cadastrar evento" },
+  { id: "eventos", texto: "Meus eventos" },
+  { id: "inscritos", texto: "Alunos inscritos" },
+];
 
 /* Props:
-   - paginaAtual: id da página aberta (para destacar o link)
+   - paginaAtual: id da página aberta
    - aoNavegar: função que troca de página
-   - aoSair: função que faz o logout */
-function Sidebar({ paginaAtual, aoNavegar, aoSair }) {
+   - aoSair: função que faz o logout
+   - usuario: dados do usuário autenticado
+*/
+
+function Sidebar({ paginaAtual, aoNavegar, aoSair, usuario }) {
+
+  // Escolhe os links de acordo com o perfil do usuário
+  const links = usuario?.role === "professor"
+    ? linksProfessor
+    : linksAluno;
+
+  // Define o nome do perfil
+  const nomePerfil = usuario?.role === "professor"
+    ? "Professor"
+    : "Aluno";
 
   // Troca de página sem recarregar o site
   function irParaPagina(evento, id) {
-    // preventDefault evita que o href="#" suba a página para o topo
     evento.preventDefault();
     aoNavegar(id);
   }
 
+  // Realiza o logout
   function sair(evento) {
     evento.preventDefault();
     aoSair();
@@ -41,6 +59,7 @@ function Sidebar({ paginaAtual, aoNavegar, aoSair }) {
 
   return (
     <aside className="sidebar">
+
       {/* Logo do AgendaTech */}
       <div className="sidebar-logo">
         <img src={logo} alt="AgendaTech" />
@@ -55,19 +74,21 @@ function Sidebar({ paginaAtual, aoNavegar, aoSair }) {
         />
 
         <div className="sidebar-user-info">
-          <h3>Ana Silva</h3>
-          <span>Aluno</span>
+          <h3>{usuario?.name || "Usuário"}</h3>
+          <span>{nomePerfil}</span>
         </div>
       </div>
 
-      {/* Menu de navegação: o map cria um link para cada item da lista */}
+      {/* Menu de navegação */}
       <nav className="sidebar-navigation">
         {links.map((link) => (
           <a
             key={link.id}
             href="#"
             className={
-              paginaAtual === link.id ? "sidebar-link active" : "sidebar-link"
+              paginaAtual === link.id
+                ? "sidebar-link active"
+                : "sidebar-link"
             }
             onClick={(evento) => irParaPagina(evento, link.id)}
           >
@@ -82,10 +103,10 @@ function Sidebar({ paginaAtual, aoNavegar, aoSair }) {
           Sair
         </a>
       </div>
+
     </aside>
   );
 }
-
 
 // Disponibiliza o componente para outras páginas
 export default Sidebar;

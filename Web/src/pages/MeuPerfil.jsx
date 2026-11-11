@@ -1,3 +1,4 @@
+
 /* ==========================================
    PÁGINA: Meu perfil
    Mostra os dados do aluno e um resumo da
@@ -12,8 +13,7 @@ import "../styles/paginasInternas.css";
 import avatar from "../assets/imagens/avatar-default.svg";
 import Sidebar from "../components/Sidebar";
 
-
-/* Dados de exemplo do aluno.*/
+// Dados de exemplo do aluno
 const aluno = {
   nome: "Ana Silva",
   tipo: "Aluno",
@@ -23,18 +23,27 @@ const aluno = {
   email: "ana.silva@fatec.sp.gov.br",
 };
 
-
-function MeuPerfil({ favoritos, inscricoes, aoNavegar, aoSair }) {
+function MeuPerfil({
+  usuario,
+  favoritos,
+  inscricoes,
+  aoNavegar,
+  aoSair,
+}) {
   return (
     <div className="pagina-inicial">
-      {/* Menu lateral (com o link "Meu perfil" destacado) */}
+
+      {/* Menu lateral com o link "Meu perfil" destacado */}
       <Sidebar
         paginaAtual="perfil"
+        usuario={usuario}
         aoNavegar={aoNavegar}
         aoSair={aoSair}
       />
 
       <main className="conteudo">
+
+        {/* Título da página */}
         <header className="boas-vindas">
           <h1>Meu perfil</h1>
           <p>Confira os seus dados cadastrados na Fatec.</p>
@@ -42,6 +51,7 @@ function MeuPerfil({ favoritos, inscricoes, aoNavegar, aoSair }) {
 
         {/* Cartão com foto, nome e dados do aluno */}
         <section className="perfil-card">
+
           {/* Foto e nome do aluno */}
           <div className="perfil-topo">
             <img
@@ -51,13 +61,17 @@ function MeuPerfil({ favoritos, inscricoes, aoNavegar, aoSair }) {
             />
 
             <div>
-              <h2>{aluno.nome}</h2>
-              <span>{aluno.tipo}</span>
+              <h2>{usuario?.name || aluno.nome}</h2>
+
+              <span>
+                {usuario?.role === "professor" ? "Professor" : aluno.tipo}
+              </span>
             </div>
           </div>
 
-          {/* Lista de dados: cada bloco tem o nome (dt) e o valor (dd) */}
+          {/* Lista de dados do aluno */}
           <dl className="perfil-dados">
+
             <div className="perfil-dado">
               <dt>RA</dt>
               <dd>{aluno.ra}</dd>
@@ -77,11 +91,13 @@ function MeuPerfil({ favoritos, inscricoes, aoNavegar, aoSair }) {
               <dt>E-mail institucional</dt>
               <dd>{aluno.email}</dd>
             </div>
+
           </dl>
         </section>
 
-        {/*quantas inscrições e quantos favoritos o aluno tem */}
+        {/* Mostra quantas inscrições e quantos favoritos o aluno tem */}
         <section className="perfil-numeros">
+
           <div className="perfil-numero">
             <strong>{inscricoes.length}</strong>
             <span>Inscrições</span>
@@ -91,11 +107,13 @@ function MeuPerfil({ favoritos, inscricoes, aoNavegar, aoSair }) {
             <strong>{favoritos.length}</strong>
             <span>Favoritos</span>
           </div>
+
         </section>
+
       </main>
     </div>
   );
 }
 
-
+// Exporta a página
 export default MeuPerfil;

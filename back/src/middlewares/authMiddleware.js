@@ -1,20 +1,32 @@
-//const jwt = require('jsonwebtoken');
-import jwt from "jsonwebtoken"
 
+import jwt from "jsonwebtoken";
 
-export default validarToken = (req, res, next) => {
+// Verifica se o usuário está autenticado
+const validarToken = (req, res, next) => {
     const authHeader = req.headers.authorization;
 
-    if (!authHeader) 
-        return res.status(401).json({ message: 'Token não fornecido' });
+    if (!authHeader) {
+        return res.status(401).json({
+            message: "Token não fornecido"
+        });
+    }
 
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.split(" ")[1];
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        // Guarda os dados do usuário autenticado
         req.userId = decoded.userId;
+        req.userRole = decoded.role;
+
         next();
-    } catch (err) {
-        return res.status(401).json({ message: 'Token inválido ou expirado' });
+
+    } catch (error) {
+        return res.status(401).json({
+            message: "Token inválido ou expirado"
+        });
     }
 };
+
+export default validarToken;

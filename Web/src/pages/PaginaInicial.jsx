@@ -1,22 +1,18 @@
+
 /* ==========================================
    PÁGINA INICIAL DO AGENDATECH
 
-   Responsável por organizar os componentes
-   que aparecem na página principal.
-   Aqui também ficam a busca, o filtro por
-   categoria e a ordenação dos eventos.
+   Exibe os eventos cadastrados no banco de dados.
+   Também controla a busca, os filtros e a ordenação.
    ========================================== */
 
-
-// Importação do useState (para guardar os valores dos filtros)
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Importação dos estilos
-// (o nome do arquivo precisa ter as mesmas letras maiúsculas: paginaInicial.css)
 import "../styles/paginaInicial.css";
 
-// Importação dos dados (a lista de eventos agora fica em data/eventos.js)
-import { eventos, transformarEmData } from "../data/eventos";
+// Importação da função que organiza as datas
+import { transformarEmData } from "../data/eventos";
 
 // Importação dos componentes
 import Sidebar from "../components/Sidebar";
@@ -25,119 +21,186 @@ import EventFilters from "../components/EventFilters";
 import EventCard from "../components/EventCard";
 
 
-/* Props (todas vêm do App):
-   - favoritos / inscricoes: ids dos eventos favoritados e inscritos
-   - aoFavoritar / aoInscrever: funções para marcar ou desmarcar
-   - aoNavegar / aoSair: funções do menu lateral */
 function PaginaInicial({
-  favoritos,
-  inscricoes,
-  aoFavoritar,
-  aoInscrever,
-  aoNavegar,
-  aoSair,
+    usuario,
+    favoritos,
+    inscricoes,
+    aoFavoritar,
+    aoInscrever,
+    aoNavegar,
+    aoSair,
 }) {
-  /* ---------- VARIÁVEIS DE ESTADO ---------- */
-  const [busca, setBusca] = useState("");          // texto da busca
-  const [categoria, setCategoria] = useState("Todas"); // categoria escolhida
-  const [ordem, setOrdem] = useState("data");      // forma de ordenar
+
+    /* ---------- VARIÁVEIS DE ESTADO ---------- */
+
+    // Guarda os eventos recebidos do banco
+    const [eventos, setEventos] = useState([]);
+
+    // Controla os campos de pesquisa e filtros
+    const [busca, setBusca] = useState("");
+    const [categoria, setCategoria] = useState("Todas");
+    const [ordem, setOrdem] = useState("data");
+
+    // Controla o carregamento e possíveis erros
+    const [carregando, setCarregando] = useState(true);
+    const [erro, setErro] = useState(false);
 
 
-  /* ---------- FUNÇÕES DOS CAMPOS ---------- */
-  // Cada função guarda no estado o que a pessoa digitou ou escolheu
-  function aoMudarBusca(evento) {
-    setBusca(evento.target.value);
-  }
+    /* ---------- BUSCAR EVENTOS NO BANCO ---------- */
 
-  function aoMudarCategoria(evento) {
-    setCategoria(evento.target.value);
-  }
+    useEffect(() => {
 
-  function aoMudarOrdem(evento) {
-    setOrdem(evento.target.value);
-  }
+        async function buscarEventos() {
+            try {
+                const resposta = await fetch("http://localhost:3000/eventos");
+
+                if (!resposta.ok) {
+                    throw new Error("Não foi possível buscar os eventos.");
+                }
+
+                const resultado = await resposta.json();
+
+                // Guarda os eventos recebidos da API
+                setEventos(resultado.data || []);
+                setErro(false);
+
+            } catch (error) {
+                console.log("Erro ao buscar eventos:", error);
+                setErro(true);
+
+            } finally {
+                setCarregando(false);
+            }
+        }
+
+        buscarEventos();
+
+    }, []);
 
 
-  /* ---------- FILTRAR E ORDENAR ---------- */
-  // 1) Filtro: fico só com os eventos que combinam com a busca e a categoria
-  const eventosFiltrados = eventos.filter((evento) => {
-    // toLowerCase deixa tudo minúsculo, para não importar maiúscula/minúscula
-    const combinaComBusca = evento.titulo
-      .toLowerCase()
-      .includes(busca.toLowerCase());
+    /* ---------- FUNÇÕES DOS CAMPOS ---------- */
 
-    const combinaComCategoria =
-      categoria === "Todas" || evento.categoria === categoria;
-
-    return combinaComBusca && combinaComCategoria;
-  });
-
-  // 2) Ordenação: o [...lista] faz uma cópia, para não bagunçar a lista original
-  const eventosOrdenados = [...eventosFiltrados].sort((a, b) => {
-    if (ordem === "nome") {
-      return a.titulo.localeCompare(b.titulo);
+    function aoMudarBusca(evento) {
+        setBusca(evento.target.value);
     }
 
-    if (ordem === "vagas") {
-      return b.vagas - a.vagas;
+    function aoMudarCategoria(evento) {
+        setCategoria(evento.target.value);
     }
 
-    // Se não for nome nem vagas, ordena pela data (a mais próxima primeiro)
-    return transformarEmData(a.data) - transformarEmData(b.data);
-  });
+    function aoMudarOrdem(evento) {
+        setOrdem(evento.target.value);
+    }
 
 
-  /* ---------- O QUE APARECE NA TELA ---------- */
-  return (
-    <div className="pagina-inicial">
-      {/* Menu lateral */}
-      <Sidebar
-        paginaAtual="inicio"
-        aoNavegar={aoNavegar}
-        aoSair={aoSair}
-      />
+    /* ---------- FILTRAR EVENTOS ---------- */
 
-      {/* Conteúdo principal (ao lado da sidebar) */}
-      <main className="conteudo">
-        <Header nome="Ana" />
+    const eventosFiltrados = eventos.filter((evento) => {
 
-        {/* Busca, categoria e ordenação */}
-        <EventFilters
-          busca={busca}
-          aoMudarBusca={aoMudarBusca}
-          categoria={categoria}
-          aoMudarCategoria={aoMudarCategoria}
-          ordem={ordem}
-          aoMudarOrdem={aoMudarOrdem}
-        />
+        const combinaComBusca = evento.titulo
+            .toLowerCase()
+            .includes(busca.toLowerCase());
 
-        {/* Lista de eventos: o map cria um card para cada evento */}
-        <section className="lista-eventos">
-          {eventosOrdenados.map((evento) => (
-            <EventCard
-              key={evento.id}
-              titulo={evento.titulo}
-              categoria={evento.categoria}
-              data={evento.data}
-              local={evento.local}
-              vagas={evento.vagas}
-              favorito={favoritos.includes(evento.id)}
-              inscrito={inscricoes.includes(evento.id)}
-              aoFavoritar={() => aoFavoritar(evento.id)}
-              aoInscrever={() => aoInscrever(evento.id)}
+        const combinaComCategoria =
+            categoria === "Todas" || evento.categoria === categoria;
+
+        return combinaComBusca && combinaComCategoria;
+    });
+
+
+    /* ---------- ORDENAR EVENTOS ---------- */
+
+    const eventosOrdenados = [...eventosFiltrados].sort((a, b) => {
+
+        if (ordem === "nome") {
+            return a.titulo.localeCompare(b.titulo);
+        }
+
+        if (ordem === "vagas") {
+            return b.vagas - a.vagas;
+        }
+
+        // Mostra primeiro os eventos com datas mais próximas
+        return transformarEmData(a.data) - transformarEmData(b.data);
+    });
+
+
+    /* ---------- O QUE APARECE NA TELA ---------- */
+
+    return (
+        <div className="pagina-inicial">
+
+            {/* Menu lateral */}
+            <Sidebar
+                paginaAtual="inicio"
+                usuario={usuario}
+                aoNavegar={aoNavegar}
+                aoSair={aoSair}
             />
-          ))}
-        </section>
 
-        {/* Mensagem quando nenhum evento combina com a busca */}
-        {eventosOrdenados.length === 0 && (
-          <p className="sem-eventos">Nenhum evento encontrado.</p>
-        )}
-      </main>
-    </div>
-  );
+            {/* Conteúdo principal */}
+            <main className="conteudo">
+
+                <Header nome={usuario?.name || "Usuário"} />
+
+                {/* Busca, categoria e ordenação */}
+                <EventFilters
+                    busca={busca}
+                    aoMudarBusca={aoMudarBusca}
+                    categoria={categoria}
+                    aoMudarCategoria={aoMudarCategoria}
+                    ordem={ordem}
+                    aoMudarOrdem={aoMudarOrdem}
+                />
+
+                {/* Mensagem durante o carregamento */}
+                {carregando && (
+                    <p>Carregando eventos...</p>
+                )}
+
+                {/* Mensagem caso ocorra algum erro */}
+                {erro && (
+                    <p className="sem-eventos">
+                        Não foi possível carregar os eventos.
+                    </p>
+                )}
+
+                {/* Lista de eventos */}
+                {!carregando && !erro && (
+                    <section className="lista-eventos">
+
+                        {eventosOrdenados.map((evento) => (
+                          <EventCard
+                            key={evento.id}
+                            titulo={evento.titulo}
+                            categoria={evento.categoria}
+                            data={evento.data}
+                            horario={evento.horario}
+                            local={evento.local}
+                            vagas={evento.vagas}
+                            descricao={evento.descricao}
+                            favorito={favoritos.includes(evento.id)}
+                            inscrito={inscricoes.includes(evento.id)}
+                            aoFavoritar={() => aoFavoritar(evento.id)}
+                            aoInscrever={() => aoInscrever(evento.id)}
+                          />
+                        ))}
+
+                    </section>
+                )}
+
+                {/* Mensagem quando não existem eventos */}
+                {!carregando && !erro && eventosOrdenados.length === 0 && (
+                    <p className="sem-eventos">
+                        Nenhum evento encontrado.
+                    </p>
+                )}
+
+            </main>
+        </div>
+    );
 }
 
 
-// Disponibiliza a página para o restante do projeto
+// Exporta a página inicial
 export default PaginaInicial;

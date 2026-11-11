@@ -1,0 +1,305 @@
+/* ==========================================
+   INÍCIO DO PROFESSOR
+   Estilos do painel principal do professor.
+   ========================================== */
+
+.inicio-professor {
+    width: 100%;
+}
+
+/* Boas-vindas e botão de cadastro */
+.professor-boas-vindas {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.professor-etiqueta {
+    color: var(--vermelho);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08rem;
+}
+
+.professor-boas-vindas h1 {
+    margin-top: 0.5rem;
+    color: var(--texto);
+    font-size: 2rem;
+}
+
+.professor-boas-vindas p,
+.professor-titulo-secao p {
+    margin-top: 0.35rem;
+    color: var(--cinza-texto);
+    font-size: 0.95rem;
+}
+
+.professor-botao-principal {
+    padding: 0.85rem 1.2rem;
+    border: none;
+    border-radius: var(--raio);
+    background: var(--vermelho);
+    color: var(--branco);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.professor-botao-principal:hover {
+    background: var(--vermelho-escuro);
+}
+
+/* Cards com os números do painel */
+.professor-resumo {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+}
+
+.professor-resumo-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: 7rem;
+    padding: 1.4rem;
+    background: var(--branco);
+    border: 1px solid var(--cinza-borda);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+}
+
+.resumo-icone,
+.atalho-icone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 0.8rem;
+    background: #fce8e8;
+    color: var(--vermelho);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.professor-resumo-card span,
+.professor-resumo-card strong {
+    display: block;
+}
+
+.professor-resumo-card span {
+    color: var(--cinza-texto);
+    font-size: 0.85rem;
+}
+
+.professor-resumo-card strong {
+    margin-top: 0.35rem;
+    color: var(--texto);
+    font-size: 1.7rem;
+}
+
+/* Seções do painel */
+.professor-secao {
+    margin-top: 2.25rem;
+}
+
+.professor-titulo-secao {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.professor-titulo-secao h2 {
+    color: var(--texto);
+    font-size: 1.25rem;
+}
+
+/* Atalhos de navegação */
+.professor-atalhos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.professor-atalho {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    min-width: 0;
+    padding: 1.1rem;
+    border: 1px solid var(--cinza-borda);
+    border-radius: var(--raio);
+    background: var(--branco);
+    color: var(--texto);
+    text-align: left;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.professor-atalho:hover {
+    transform: translateY(-0.2rem);
+    border-color: #e9aaaa;
+    box-shadow: var(--sombra);
+}
+
+.professor-atalho > span:nth-child(2) {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.professor-atalho strong {
+    font-size: 0.9rem;
+}
+
+.professor-atalho small {
+    color: var(--cinza-texto);
+    font-size: 0.78rem;
+}
+
+.atalho-seta {
+    color: var(--vermelho);
+    font-size: 1.5rem;
+}
+
+/* Lista dos próximos eventos */
+.professor-link-ver {
+    border: none;
+    background: transparent;
+    color: var(--vermelho);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.professor-link-ver:hover {
+    text-decoration: underline;
+}
+
+.professor-lista-proximos {
+    overflow: hidden;
+    border: 1px solid var(--cinza-borda);
+    border-radius: var(--raio);
+    background: var(--branco);
+}
+
+.professor-evento-linha {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.1rem 1.25rem;
+    border-bottom: 1px solid var(--cinza-borda);
+}
+
+.professor-evento-linha:last-child {
+    border-bottom: none;
+}
+
+.professor-evento-data {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 6rem;
+}
+
+.professor-evento-data strong {
+    color: var(--texto);
+    font-size: 0.9rem;
+}
+
+.professor-evento-data span,
+.professor-evento-detalhes span {
+    color: var(--cinza-texto);
+    font-size: 0.8rem;
+}
+
+.professor-evento-detalhes {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.3rem;
+    min-width: 0;
+}
+
+.professor-evento-detalhes strong {
+    overflow: hidden;
+    color: var(--texto);
+    font-size: 0.92rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.professor-evento-vagas {
+    padding: 0.4rem 0.7rem;
+    border-radius: 2rem;
+    background: #fce8e8;
+    color: var(--vermelho);
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.professor-mensagem {
+    padding: 1.5rem;
+    border: 1px solid var(--cinza-borda);
+    border-radius: var(--raio);
+    background: var(--branco);
+    color: var(--cinza-texto);
+    text-align: center;
+}
+
+.professor-mensagem button {
+    margin-top: 0.8rem;
+    padding: 0.65rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: var(--vermelho);
+    color: var(--branco);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.professor-erro {
+    color: var(--vermelho);
+}
+
+/* Ajustes para tablets e celulares */
+@media (max-width: 60rem) {
+    .professor-resumo,
+    .professor-atalhos {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 40rem) {
+    .professor-boas-vindas {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .professor-boas-vindas h1 {
+        font-size: 1.6rem;
+    }
+
+    .professor-evento-linha {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+    }
+
+    .professor-evento-detalhes {
+        flex-basis: 100%;
+        order: 2;
+    }
+
+    .professor-evento-vagas {
+        margin-left: auto;
+    }
+}

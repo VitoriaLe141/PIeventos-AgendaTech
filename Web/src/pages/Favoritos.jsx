@@ -17,6 +17,7 @@ import EventCard from "../components/EventCard";
 
 
 function Favoritos({
+  usuario,
   favoritos,
   inscricoes,
   aoFavoritar,
@@ -35,6 +36,7 @@ function Favoritos({
       {/* Menu lateral (com o link "Favoritos" destacado) */}
       <Sidebar
         paginaAtual="favoritos"
+        usuario={usuario}
         aoNavegar={aoNavegar}
         aoSair={aoSair}
       />

@@ -34,15 +34,17 @@ function Login({ aoEntrar }) {
 
   /* ---------- CAMPO RA ---------- */
 
-  function aoMudarRa(evento) {
+ function aoMudarRa(evento) {
+  const valor = evento.target.value;
 
-    // Permite somente números
-    const somenteNumeros = evento.target.value.replace(/\D/g, "");
-
-    // Limita o RA a 13 números
-    setRa(somenteNumeros.slice(0, TAMANHO_RA));
-
+  // Se for numérico, permite somente 13 números
+  if (/^\d*$/.test(valor)) {
+    setRa(valor.slice(0, 13));
+  } else {
+    // Se tiver letras, permite digitar o e-mail
+    setRa(valor.slice(0, 150));
   }
+}
 
 
   /* ---------- CAMPO SENHA ---------- */
@@ -60,24 +62,22 @@ function Login({ aoEntrar }) {
 
   /* ---------- VALIDAÇÃO ---------- */
 
-  function validar() {
+function validar() {
+  const novosErros = {};
+  const login = ra.trim();
 
-    const novosErros = {};
-
-    if (ra === "") {
-      novosErros.ra = "Informe seu RA.";
-
-    } else if (ra.length !== TAMANHO_RA) {
-      novosErros.ra = "O RA deve ter exatamente 13 números.";
-    }
-
-    if (senha === "") {
-      novosErros.senha = "Informe sua senha.";
-    }
-
-    return novosErros;
-
+  if (login === "") {
+    novosErros.ra = "Informe seu RA ou e-mail.";
+  } else if (/^\d+$/.test(login) && login.length !== TAMANHO_RA) {
+    novosErros.ra = `O RA deve conter exatamente ${TAMANHO_RA} números.`;
   }
+
+  if (senha === "") {
+    novosErros.senha = "Informe sua senha.";
+  }
+
+  return novosErros;
+}
 
 
   /* ---------- ENVIO DO LOGIN ---------- */
@@ -136,8 +136,11 @@ function Login({ aoEntrar }) {
         // Guarda o token de autenticação
         sessionStorage.setItem("token", dados.data);
 
-        // Avisa ao App que o aluno entrou
-        aoEntrar();
+        // Guarda os dados do usuário e seu perfil
+        sessionStorage.setItem("usuario", JSON.stringify(dados.user));
+
+        // Avisa ao App que o usuário entrou
+        aoEntrar(dados.user);
       }
 
     } catch (erro) {
@@ -182,15 +185,14 @@ function Login({ aoEntrar }) {
           {/* CAMPO RA */}
 
           <CampoTexto
-            id="ra"
-            rotulo="RA"
-            tipo="text"
-            valor={ra}
-            aoMudar={aoMudarRa}
-            placeholder="Digite seu RA"
-            erro={erros.ra}
-            tamanhoMaximo={TAMANHO_RA}
-            modoTeclado="numeric"
+          id="ra"
+          rotulo="RA ou e-mail"
+          tipo="text"
+          valor={ra}
+          aoMudar={aoMudarRa}
+          placeholder="Digite seu RA ou e-mail"
+          erro={erros.ra}
+          tamanhoMaximo={150}
           />
 
 

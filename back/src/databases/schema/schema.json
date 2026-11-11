@@ -91,6 +91,66 @@
         },
         "created_at": { "type": "datetime", "nullable": false, "default": true }
       }
+    },
+
+    "eventos": {
+      "columns": {
+        "id": {
+          "type": "int",
+          "primaryKey": true,
+          "autoIncrement": true
+        },
+        "titulo": {
+          "type": "string",
+          "size": 150,
+          "nullable": false
+        },
+        "descricao": {
+          "type": "string",
+          "size": 1000,
+          "nullable": false
+        },
+        "categoria": {
+          "type": "string",
+          "size": 100,
+          "nullable": false
+        },
+        "data": {
+          "type": "string",
+          "size": 20,
+          "nullable": false
+        },
+        "horario": {
+          "type": "string",
+          "size": 10,
+          "nullable": false
+        },
+        "local": {
+          "type": "string",
+          "size": 200,
+          "nullable": false
+        },
+        "vagas": {
+          "type": "int",
+          "nullable": false
+        },
+        "idprofessor": {
+          "type": "int",
+          "nullable": false
+        },
+        "created_at": {
+          "type": "datetime",
+          "nullable": false,
+          "default": true
+        },
+        "actived": {
+          "type": "int",
+          "nullable": false,
+          "default": 1
+        }
+      }
     }
   }
 }
+
+

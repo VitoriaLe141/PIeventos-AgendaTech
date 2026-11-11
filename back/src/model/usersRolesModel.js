@@ -92,3 +92,34 @@ export async function Put( data, id ){
         return {"message": "error", "Error": error.message} 
     }
 }
+
+// Busca o perfil associado ao usuário
+export async function GetRoleByUserId(iduser) {
+    try {
+        const results = await db.execute(
+            `SELECT roles.role
+             FROM usersroles
+             INNER JOIN roles ON roles.id = usersroles.idroler
+             WHERE usersroles.iduser = ?`,
+            [iduser]
+        );
+
+        if (results[0].length === 0) {
+            return {
+                message: "error",
+                Error: "Perfil não encontrado."
+            };
+        }
+
+        return {
+            message: "Success",
+            data: results[0][0]
+        };
+
+    } catch (error) {
+        return {
+            message: "error",
+            Error: error.message
+        };
+    }
+}
