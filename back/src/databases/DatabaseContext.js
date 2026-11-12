@@ -1,3 +1,9 @@
+/* ==========================================
+   CONTEXTO DO BANCO DE DADOS
+   Inicializa a conexão escolhida no arquivo .env
+   e disponibiliza as consultas para os models.
+   ========================================== */
+
 import { createDatabaseIfNotExists, pool } from "./connections/connectionMysql.js";
 import { getDbConnection } from "./connections/connectionSqllite.js";
 import { MySQLStrategy, SQLiteStrategy } from "./DatabaseStrategy.js";

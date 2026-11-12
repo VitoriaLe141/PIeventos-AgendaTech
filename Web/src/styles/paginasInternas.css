@@ -1,150 +1,5 @@
 
 /* ==========================================
-   ESTILOS DAS PÁGINAS INTERNAS
-   Favoritos, Minhas inscrições e Meu perfil.
-   ========================================== */
-
-
-/* ==========================================
-   1. MENSAGEM DE LISTA VAZIA
-   ========================================== */
-
-/* Caixa branca centralizada com texto e botão */
-.estado-vazio {
-    margin-top: 1.75rem;
-    padding: 2.5rem 1.25rem;
-
-    background-color: var(--branco);
-    border-radius: var(--raio);
-    box-shadow: var(--sombra);
-
-    /* Texto e botão um embaixo do outro, no centro */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-
-    text-align: center;
-    color: var(--cinza-texto);
-}
-
-/* O botão fica apenas do tamanho do texto */
-.btn-auto {
-    width: auto;
-    padding: 0.75rem 1.75rem;
-}
-
-/* Frase de resumo acima da lista de inscrições */
-.resumo {
-    margin-top: 1.75rem;
-    font-size: 1rem;
-    color: var(--cinza-texto);
-}
-
-/* Número em destaque, em vermelho */
-.resumo strong {
-    color: var(--vermelho);
-}
-
-
-/* ==========================================
-   2. MEU PERFIL
-   ========================================== */
-
-/* Cartão branco com os dados do aluno */
-.perfil-card {
-    max-width: 40rem;
-    margin-top: 1.75rem;
-    padding: 1.75rem;
-
-    background-color: var(--branco);
-    border-radius: var(--raio);
-    box-shadow: var(--sombra);
-}
-
-/* Foto + nome, com uma linha separando dos dados */
-.perfil-topo {
-    display: flex;
-    align-items: center;
-    gap: 1.125rem;
-
-    padding-bottom: 1.25rem;
-    border-bottom: 1px solid var(--cinza-borda);
-}
-
-/* Foto redonda */
-.perfil-avatar {
-    width: 5rem;
-    height: 5rem;
-    border-radius: 50%;
-}
-
-.perfil-topo h2 {
-    font-size: 1.4rem;
-}
-
-.perfil-topo span {
-    font-size: 0.875rem;
-    color: var(--cinza-texto);
-}
-
-/* Dados em colunas */
-.perfil-dados {
-    margin-top: 1.25rem;
-
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
-    gap: 1.125rem;
-}
-
-/* Nome do dado (RA, Curso...) em cinza */
-.perfil-dado dt {
-    font-size: 0.8125rem;
-    color: var(--cinza-texto);
-}
-
-/* Valor do dado */
-.perfil-dado dd {
-    margin-top: 0.125rem;
-    font-size: 0.9375rem;
-    font-weight: 600;
-    overflow-wrap: anywhere;
-}
-
-/* Caixinhas dos números de inscrições e favoritos */
-.perfil-numeros {
-    max-width: 40rem;
-    margin-top: 1.25rem;
-
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.25rem;
-}
-
-.perfil-numero {
-    padding: 1.25rem;
-
-    background-color: var(--branco);
-    border-radius: var(--raio);
-    box-shadow: var(--sombra);
-
-    text-align: center;
-}
-
-/* Número grande em vermelho */
-.perfil-numero strong {
-    display: block;
-    font-size: 2rem;
-    color: var(--vermelho);
-}
-
-.perfil-numero span {
-    font-size: 0.875rem;
-    color: var(--cinza-texto);
-}
-
-
-/* ==========================================
    3. FORMULÁRIO DE CADASTRO DE EVENTOS
    ========================================== */
 
@@ -160,7 +15,7 @@
 .formulario-evento div {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.5rem;
 }
 
 /* Estilo dos títulos dos campos */
@@ -170,54 +25,67 @@
     color: var(--texto);
 }
 
-/* Estilo dos campos de preenchimento */
+/* Padroniza os campos de preenchimento e seleção */
 .formulario-evento input,
-.formulario-evento textarea {
+.formulario-evento textarea,
+.formulario-evento select {
     width: 100%;
-    padding: 0.8rem;
+    min-height: 3rem;
+    padding: 0.8rem 0.9rem;
     border: 1px solid var(--cinza-borda);
-    border-radius: 0.5rem;
-
+    border-radius: 0.6rem;
     background-color: var(--branco);
     color: var(--texto);
-
     font-family: inherit;
     font-size: 0.95rem;
     box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-/* Altura padrão da descrição */
+/* Altura e comportamento da descrição */
 .formulario-evento textarea {
-    min-height: 7rem;
-    resize: vertical;
+    min-height: 8rem;
+    resize: none;
+    overflow-y: auto;
 }
 
-/* Destaque ao clicar nos campos */
+/* Personaliza o campo de categoria */
+.formulario-evento select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23646a75' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.9rem center;
+    padding-right: 2.5rem;
+}
+
+/* Destaque vermelho ao clicar nos campos */
 .formulario-evento input:focus,
-.formulario-evento textarea:focus {
+.formulario-evento textarea:focus,
+.formulario-evento select:focus {
     outline: none;
     border-color: var(--vermelho);
+    box-shadow: 0 0 0 0.2rem rgba(209, 27, 27, 0.1);
 }
 
 /* Botão de cadastrar */
 .formulario-evento button {
-    padding: 0.85rem;
+    min-height: 3rem;
+    padding: 0.85rem 1.2rem;
     border: none;
-    border-radius: 0.5rem;
-
+    border-radius: 0.6rem;
     background-color: var(--vermelho);
     color: var(--branco);
-
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, transform 0.2s;
 }
 
 /* Efeito ao passar o mouse no botão */
 .formulario-evento button:hover {
     background-color: var(--vermelho-escuro);
+    transform: translateY(-0.1rem);
 }
 
 
@@ -230,167 +98,791 @@
     width: 100%;
     max-width: 42rem;
     margin: 2rem auto;
+    padding: 2rem;
     box-sizing: border-box;
 }
 
-/* Mantém a descrição com altura fixa */
+/* Mantém a descrição com altura padronizada */
 .formulario-evento .campo-descricao {
     height: 8rem;
     min-height: 8rem;
     max-height: 8rem;
-
-    /* Permite rolar o texto dentro do campo */
-    overflow-y: auto;
-
-    /* Impede que o usuário aumente o campo manualmente */
-    resize: none;
 }
 
-/* Lista dos eventos cadastrados pelo professor */
+/* Ajusta o formulário em telas menores */
+@media (max-width: 40rem) {
+    .card-cadastro-evento {
+        padding: 1.25rem;
+        margin: 1rem auto;
+    }
+
+    .formulario-evento {
+        gap: 1rem;
+    }
+}
+
+
+/* ==========================================
+   5. PÁGINA MEUS EVENTOS
+   Estiliza os cartões e as ações do professor.
+   ========================================== */
+
+/* Organiza os cartões dos eventos */
 .lista-meus-eventos {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
     gap: 1.5rem;
-    margin-top: 2rem;
+    margin-top: 1.75rem;
 }
 
-/* Card de cada evento */
+/* Aparência de cada cartão */
 .meu-evento-card {
-    background: #ffffff;
-    border: 1px solid #d1d5db;
-    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
     padding: 1.5rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background-color: var(--branco);
+    border: 1px solid var(--cinza-borda);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
+/* Efeito ao passar o mouse no cartão */
 .meu-evento-card:hover {
-    transform: translateY(-0.25rem);
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+    transform: translateY(-0.2rem);
+    box-shadow: 0 0.5rem 1.2rem rgba(0, 0, 0, 0.08);
 }
 
+/* Identificação da categoria do evento */
+.meu-evento-card .event-categoria {
+    align-self: flex-start;
+    padding: 0.35rem 0.75rem;
+    border-radius: 2rem;
+    background-color: #fde8e8;
+    color: var(--vermelho);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Título do evento */
 .meu-evento-card h2 {
-    color: #1f2937;
+    margin: 1rem 0 0.5rem;
+    color: var(--texto);
     font-size: 1.2rem;
-    margin: 1rem 0;
 }
 
+/* Descrição do evento */
 .meu-evento-descricao {
-    color: #646a75;
-    line-height: 1.5;
     margin-bottom: 1rem;
+    color: var(--cinza-texto);
+    font-size: 0.9rem;
+    line-height: 1.6;
 }
 
+/* Área com data, horário, local e vagas */
 .meu-evento-informacoes {
-    border-top: 1px solid #d1d5db;
-    padding-top: 0.8rem;
-    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    margin-top: auto;
+    padding: 1rem 0;
+    border-top: 1px solid var(--cinza-borda);
 }
 
+/* Texto das informações */
 .meu-evento-informacoes p {
-    color: #646a75;
-    margin: 0.5rem 0;
+    margin: 0;
+    color: var(--cinza-texto);
     font-size: 0.9rem;
 }
 
-/* Botão para excluir evento */
+/* Destaca os nomes das informações */
+.meu-evento-informacoes strong {
+    color: var(--texto);
+}
+
+/* Organiza os botões de ação */
+.acoes-meu-evento {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+/* Aparência dos botões */
+.btn-editar-evento,
 .btn-excluir-evento {
-    width: 100%;
+    flex: 1;
     padding: 0.75rem;
     border: none;
-    border-radius: 8px;
-    background: #d11b1b;
-    color: #ffffff;
-    font-weight: bold;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: background-color 0.2s;
 }
 
-.btn-excluir-evento:hover {
-    background: #971919;
+/* Botão de editar */
+.btn-editar-evento {
+    background-color: var(--vermelho);
+    color: var(--branco);
 }
 
+.btn-editar-evento:hover {
+    background-color: var(--vermelho-escuro);
+}
 
-/* Formulário para editar eventos */
+/* Botão de excluir */
+.acoes-meu-evento .btn-excluir-evento {
+    background-color: #f3f4f6;
+    color: var(--vermelho);
+    border: 1px solid var(--cinza-borda);
+}
+
+.acoes-meu-evento .btn-excluir-evento:hover {
+    background-color: #fde8e8;
+}
+
+/* Mensagens de carregamento e lista vazia */
+.sem-eventos {
+    margin-top: 1.75rem;
+    padding: 2rem;
+    background-color: var(--branco);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+    color: var(--cinza-texto);
+    text-align: center;
+}
+
+/* Ajusta os cartões em telas menores */
+@media (max-width: 40rem) {
+    .lista-meus-eventos {
+        grid-template-columns: 1fr;
+    }
+
+    .acoes-meu-evento {
+        flex-direction: column;
+    }
+}
+
+/* ==========================================
+   FORMULÁRIO DE EDIÇÃO DE EVENTOS
+   Mantém a edição com o mesmo visual do cadastro.
+   ========================================== */
+
+/* Organiza o formulário de edição */
 .formulario-editar-evento {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.2rem;
+    width: 100%;
     margin-top: 1.5rem;
 }
 
-.formulario-editar-evento div {
+/* Organiza cada campo e seu respectivo título */
+.formulario-editar-evento > div {
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
 }
 
+/* Estiliza os títulos dos campos */
 .formulario-editar-evento label {
-    color: #1f2937;
+    font-size: 0.95rem;
     font-weight: 600;
+    color: var(--texto);
 }
 
+/* Padroniza os campos de preenchimento */
 .formulario-editar-evento input,
-.formulario-editar-evento textarea {
+.formulario-editar-evento textarea,
+.formulario-editar-evento select {
     width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font: inherit;
+    min-height: 2.8rem;
+    padding: 0.8rem;
+    border: 1px solid var(--cinza-borda);
+    border-radius: 0.5rem;
+    background-color: var(--branco);
+    color: var(--texto);
+    font-family: inherit;
+    font-size: 0.95rem;
     box-sizing: border-box;
 }
 
+/* Mantém a descrição maior que os outros campos */
 .formulario-editar-evento textarea {
-    min-height: 7rem;
+    min-height: 8rem;
     resize: vertical;
 }
 
-/* Botões de edição */
-.acoes-meu-evento,
+/* Destaca o campo selecionado */
+.formulario-editar-evento input:focus,
+.formulario-editar-evento textarea:focus,
+.formulario-editar-evento select:focus {
+    outline: none;
+    border-color: var(--vermelho);
+}
+
+/* Organiza os botões de salvar e cancelar */
 .acoes-editar-evento {
     display: flex;
     gap: 0.75rem;
-    margin-top: 1rem;
+    margin-top: 1.25rem;
 }
 
-.btn-editar-evento,
-.btn-salvar-evento,
-.btn-cancelar-edicao,
-.btn-excluir-evento {
+/* Padroniza os botões */
+.acoes-editar-evento button {
     flex: 1;
+    min-height: 2.8rem;
     padding: 0.75rem;
     border: none;
-    border-radius: 8px;
-    font-weight: bold;
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background 0.2s ease;
 }
 
-.btn-editar-evento,
+/* Botão de salvar alterações */
 .btn-salvar-evento {
-    background: #d11b1b;
-    color: #ffffff;
+    background-color: var(--vermelho);
+    color: var(--branco);
 }
 
-.btn-editar-evento:hover,
+/* Efeito ao passar o mouse em salvar */
 .btn-salvar-evento:hover {
-    background: #971919;
+    background-color: var(--vermelho-escuro);
 }
 
+/* Botão de cancelar */
 .btn-cancelar-edicao {
-    background: #e5e7eb;
-    color: #1f2937;
+    background-color: #e5e7eb;
+    color: var(--texto);
 }
 
+/* Efeito ao passar o mouse em cancelar */
 .btn-cancelar-edicao:hover {
-    background: #d1d5db;
+    background-color: #d1d5db;
 }
 
 /* Ajusta os botões em telas menores */
 @media (max-width: 40rem) {
-    .acoes-meu-evento,
     .acoes-editar-evento {
         flex-direction: column;
     }
+}
+
+/* ==========================================
+   MODAL DE MENSAGEM
+   Exibe mensagens de sucesso e confirmação.
+   ========================================== */
+
+/* Fundo escuro que cobre a página */
+.modal-fundo {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    z-index: 9999;
+}
+
+/* Caixa principal do modal */
+.modal-mensagem {
+    width: 100%;
+    max-width: 25rem;
+    padding: 2rem;
+    background-color: var(--branco);
+    border-radius: 1rem;
+    text-align: center;
+    box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.2);
+    animation: aparecerModal 0.25s ease;
+}
+
+/* Ícone circular do modal */
+.modal-icone {
+    width: 3.5rem;
+    height: 3.5rem;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* Cor verde para mensagens de sucesso */
+.modal-icone.sucesso {
+    background-color: #e5f6eb;
+    color: #18864b;
+}
+
+/* Cor laranja para confirmação de exclusão */
+.modal-icone.confirmacao {
+    background-color: #fff0e0;
+    color: #d97706;
+}
+
+/* Título do modal */
+.modal-mensagem h2 {
+    color: var(--texto);
+    font-size: 1.4rem;
+    margin-bottom: 0.7rem;
+}
+
+/* Texto da mensagem */
+.modal-mensagem p {
+    color: var(--cinza-texto);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Botão para fechar o modal */
+.modal-mensagem button {
+    width: 100%;
+    padding: 0.85rem;
+    border: none;
+    border-radius: 0.6rem;
+    background-color: var(--vermelho);
+    color: var(--branco);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+/* Efeito ao passar o mouse no botão */
+.modal-mensagem button:hover {
+    background-color: var(--vermelho-escuro);
+}
+
+/* Animação de entrada do modal */
+@keyframes aparecerModal {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ==========================================
+   AJUSTE VISUAL: ALUNOS INSCRITOS
+   ========================================== */
+
+/* Organiza os cartões de resumo */
+.pagina-alunos-inscritos .inscritos-resumo {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+/* Aparência dos cartões de resumo */
+.pagina-alunos-inscritos .inscritos-resumo-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    background-color: var(--branco);
+    border: 1px solid var(--cinza-borda);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+}
+
+/* Texto explicativo dos cartões */
+.pagina-alunos-inscritos .inscritos-resumo-card span {
+    color: var(--cinza-texto);
+    font-size: 0.9rem;
+}
+
+/* Números em destaque */
+.pagina-alunos-inscritos .inscritos-resumo-card strong {
+    color: var(--vermelho);
+    font-size: 1.8rem;
+}
+
+/* Organiza os campos de pesquisa e filtro */
+.pagina-alunos-inscritos .inscritos-filtros {
+    display: grid;
+    grid-template-columns: minmax(12rem, 1fr) minmax(12rem, 1fr) auto;
+    align-items: end;
+    gap: 1rem;
+    margin: 1.5rem 0;
+    padding: 1.25rem;
+    background-color: var(--branco);
+    border: 1px solid var(--cinza-borda);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+}
+
+/* Coloca os títulos acima dos campos */
+.pagina-alunos-inscritos .inscritos-filtros div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+/* Estiliza os títulos dos filtros */
+.pagina-alunos-inscritos .inscritos-filtros label {
+    color: var(--texto);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Padroniza o campo de busca e o seletor */
+.pagina-alunos-inscritos .inscritos-filtros input,
+.pagina-alunos-inscritos .inscritos-filtros select {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.65rem 0.8rem;
+    border: 1px solid var(--cinza-borda);
+    border-radius: 0.5rem;
+    background-color: var(--branco);
+    color: var(--texto);
+    font: inherit;
+    box-sizing: border-box;
+}
+
+/* Ajusta o botão de atualização */
+.pagina-alunos-inscritos .inscritos-atualizar {
+    width: auto;
+    min-height: 2.75rem;
+    padding: 0.65rem 1.5rem;
+}
+
+/* Ajusta a página em telas menores */
+@media (max-width: 48rem) {
+    .pagina-alunos-inscritos .inscritos-filtros {
+        grid-template-columns: 1fr;
+    }
+
+    .pagina-alunos-inscritos .inscritos-atualizar {
+        width: 100%;
+    }
+}
+
+/* Deixa os cartões empilhados no celular */
+@media (max-width: 36rem) {
+    .pagina-alunos-inscritos .inscritos-resumo {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================
+   TABELA: ALUNOS INSCRITOS
+   Organiza os dados dos alunos no padrão
+   visual das outras páginas do AgendaTech.
+   ========================================== */
+
+.inscritos-tabela-area {
+    width: 100%;
+    margin-top: 1.5rem;
+    overflow-x: auto;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.inscritos-tabela {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.inscritos-tabela thead {
+    background: #f9fafb;
+}
+
+.inscritos-tabela th {
+    padding: 1rem;
+    color: #1f2937;
+    font-weight: 600;
+    border-bottom: 1px solid #d1d5db;
+}
+
+.inscritos-tabela td {
+    padding: 1rem;
+    color: #646a75;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.inscritos-tabela tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.inscritos-tabela tbody tr:hover {
+    background: #fff5f5;
+}
+
+/* Centraliza o cabeçalho da página de cadastro */
+.conteudo .boas-vindas {
+    text-align: center;
+    width: 100%;
+    margin: 2rem auto;
+}
+
+/* Centraliza e destaca o formulário de cadastro */
+.conteudo .perfil-card.card-cadastro-evento {
+    width: 100%;
+    max-width: 760px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+}
+
+/* Organiza os campos em uma coluna */
+.conteudo .formulario-evento {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Faz os campos ocuparem toda a largura do card */
+.conteudo .formulario-evento > div {
+    width: 100%;
+}
+
+.conteudo .formulario-evento input,
+.conteudo .formulario-evento select,
+.conteudo .formulario-evento textarea {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Adapta o card para telas menores */
+@media (max-width: 768px) {
+    .conteudo .perfil-card.card-cadastro-evento {
+        padding: 1rem;
+        margin: 1rem auto;
+    }
+}
+
+
+/* ==========================================
+   PÁGINA: MEU PERFIL
+   Centraliza e organiza as informações do aluno.
+   ========================================== */
+
+/* Área principal que limita a largura do perfil */
+.perfil-container {
+    width: 100%;
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Centraliza o título e a descrição */
+.perfil-cabecalho {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.perfil-cabecalho h1 {
+    color: var(--texto);
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.perfil-cabecalho p {
+    color: var(--cinza-texto);
+}
+
+/* Cartão principal do perfil */
+.perfil-card {
+    background: var(--branco);
+    border: 1px solid var(--cinza-borda);
+    border-radius: var(--raio);
+    padding: 2rem;
+    box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.05);
+}
+
+/* Organiza o avatar e a identificação */
+.perfil-topo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.8rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--cinza-borda);
+}
+
+/* Imagem de perfil */
+.perfil-avatar {
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    background: #fde7e7;
+    object-fit: cover;
+}
+
+/* Nome e tipo de usuário */
+.perfil-identificacao h2 {
+    color: var(--texto);
+    font-size: 1.4rem;
+    margin-bottom: 0.3rem;
+}
+
+.perfil-identificacao span {
+    color: var(--vermelho);
+    font-weight: 600;
+}
+
+/* Organiza os dados em duas colunas */
+.perfil-dados {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    padding-top: 1.5rem;
+}
+
+/* Cada informação do perfil */
+.perfil-dado {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+/* Nome de cada informação */
+.perfil-dado span {
+    color: var(--cinza-texto);
+    font-size: 0.9rem;
+}
+
+/* Valor de cada informação */
+.perfil-dado strong {
+    color: var(--texto);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+/* Cartões de inscrições e favoritos */
+.perfil-numeros {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+/* Cada indicador */
+.perfil-numero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    background: var(--branco);
+    border: 1px solid var(--cinza-borda);
+    border-radius: var(--raio);
+    box-shadow: 0 0.3rem 1rem rgba(0, 0, 0, 0.04);
+}
+
+/* Número em destaque */
+.perfil-numero strong {
+    color: var(--vermelho);
+    font-size: 1.8rem;
+}
+
+/* Descrição dos indicadores */
+.perfil-numero span {
+    color: var(--cinza-texto);
+    text-align: center;
+}
+
+/* Ajustes para telas menores */
+@media (max-width: 600px) {
+    .perfil-container {
+        padding: 1rem;
+    }
+
+    .perfil-dados {
+        grid-template-columns: 1fr;
+    }
+
+    .perfil-numeros {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* Centraliza a mensagem quando não existem favoritos */
+.estado-vazio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    max-width: 35rem;
+    margin: 4rem auto;
+    padding: 3rem 2rem;
+
+    text-align: center;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+}
+
+/* Ícone de coração */
+.estado-vazio-icone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 4rem;
+    height: 4rem;
+    margin-bottom: 1rem;
+
+    border-radius: 50%;
+    background-color: #fde8e8;
+    color: #d11b1b;
+    font-size: 2.5rem;
+}
+
+/* Título da mensagem */
+.estado-vazio h2 {
+    margin-bottom: 0.5rem;
+    color: #1f2937;
+    font-size: 1.3rem;
+}
+
+/* Texto explicativo */
+.estado-vazio p {
+    max-width: 25rem;
+    margin-bottom: 1.5rem;
+    color: #646a75;
+    line-height: 1.5;
+}
+
+/* Botão de voltar aos eventos */
+.estado-vazio .btn-principal {
+    width: 100%;
+    max-width: 15rem;
+}
+
+/* Centraliza o resumo de inscrições na área de conteúdo */
+.resumo-centralizado {
+    width: 100%;
+    margin: 2rem auto;
+    text-align: center;
+    color: #1f2937;
+    font-size: 1rem;
+}
+
+/* Destaca a quantidade de inscrições */
+.resumo-centralizado strong {
+    color: #d11b1b;
+    font-weight: 700;
 }
 

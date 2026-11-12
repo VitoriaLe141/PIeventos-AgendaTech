@@ -1,148 +1,177 @@
+
 /* ==========================================
    ESTILOS EXTRAS DO CARD DE EVENTO
-   Coração de favorito e botão de cancelar.
+   Favoritos, cancelamento e detalhes
    ========================================== */
 
-/* O card vira a "referência" para o coração ficar no canto dele */
+
+/* ==========================================
+   1. CARD DE EVENTO
+   ========================================== */
+
+/* Define o card como referência para o coração */
 .event-card {
-  position: relative;
+    position: relative;
+    cursor: pointer;
+
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* Botão do coração (canto de cima, à direita) */
+/* Efeito ao passar o mouse pelo card */
+.event-card:hover {
+    transform: translateY(-0.4rem) scale(1.02);
+    box-shadow: 0 0.8rem 1.5rem rgba(0, 0, 0, 0.15);
+}
+
+
+/* ==========================================
+   2. BOTÃO DE FAVORITO
+   ========================================== */
+
+/* Posiciona o coração no canto superior direito */
 .btn-favorito {
-  position: absolute;
-  top: 0.875rem;
-  right: 0.875rem;
+    position: absolute;
+    top: 0.875rem;
+    right: 0.875rem;
 
-  /* Área clicável do botão */
-  width: 2.25rem;
-  height: 2.25rem;
+    /* Área clicável do botão */
+    width: 2.25rem;
+    height: 2.25rem;
 
-  /* Centraliza o desenho do coração */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    /* Centraliza o desenho do coração */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-  background: transparent;
-  border: none;
-  border-radius: 50%; 
+    background: transparent;
+    border: none;
+    border-radius: 50%;
 
-  color: var(--cinza-texto);
-  cursor: pointer;
+    color: var(--cinza-texto);
+    cursor: pointer;
 
-  transition: background 0.2s, color 0.2s;
+    transition: background 0.2s, color 0.2s;
 }
 
-
+/* Tamanho do desenho do coração */
 .btn-favorito svg {
-  width: 1.25rem;
-  height: 1.25rem;
+    width: 1.25rem;
+    height: 1.25rem;
 }
 
+/* Efeito ao passar o mouse */
 .btn-favorito:hover {
-  background: #fce8e8;
-  color: var(--vermelho);
+    background: #fce8e8;
+    color: var(--vermelho);
 }
 
 /* Coração vermelho quando o evento é favorito */
 .btn-favorito.ativo {
-  color: var(--vermelho);
+    color: var(--vermelho);
 }
 
-/* Mostra onde o botão está quando usamos o teclado.*/
+/* Destaque ao navegar pelo teclado */
 .btn-favorito:focus-visible {
-  outline: 2px solid var(--vermelho);
-  outline-offset: 2px;
+    outline: 2px solid var(--vermelho);
+    outline-offset: 2px;
 }
 
-/* Botão "Cancelar inscrição": branco com borda vermelha,
-   para parecer diferente do botão de se inscrever.*/
+
+/* ==========================================
+   3. BOTÃO DE CANCELAR INSCRIÇÃO
+   ========================================== */
+
+/* Botão branco com borda vermelha */
 .btn-principal.btn-cancelar {
-  background: var(--branco);
-  color: var(--vermelho);
-  border: 1px solid var(--vermelho);
+    background: var(--branco);
+    color: var(--vermelho);
+    border: 1px solid var(--vermelho);
 }
 
+/* Efeito ao passar o mouse */
 .btn-principal.btn-cancelar:hover {
-  background: #fce8e8;
+    background: #fce8e8;
 }
 
 
-/* Janela ampliada dos detalhes do evento */
+/* ==========================================
+   4. FUNDO DA JANELA DE DETALHES
+   ========================================== */
+
+/* Fundo escuro atrás da janela */
 .evento-modal-fundo {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
-  z-index: 1000;
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.6);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 1rem;
+    z-index: 1000;
 }
+
+
+/* ==========================================
+   5. JANELA DE DETALHES DO EVENTO
+   ========================================== */
 
 /* Caixa principal da janela */
 .evento-modal {
-  position: relative;
-  background: #ffffff;
-  width: 100%;
-  max-width: 38rem;
-  max-height: 85vh;
-  overflow-y: auto;
-  padding: 2rem;
-  border-radius: 1rem;
-  box-sizing: border-box;
+    position: relative;
+
+    background: var(--branco);
+
+    width: 100%;
+    max-width: 38rem;
+    max-height: 85vh;
+
+    overflow-y: auto;
+
+    padding: 2rem;
+    border-radius: 1rem;
+    box-sizing: border-box;
 }
 
 /* Botão de fechar */
 .evento-modal-fechar {
-  position: absolute;
-  top: 0.8rem;
-  right: 1rem;
-  border: none;
-  background: transparent;
-  font-size: 2rem;
-  cursor: pointer;
-  color: #646a75;
+    position: absolute;
+    top: 0.8rem;
+    right: 1rem;
+
+    border: none;
+    background: transparent;
+
+    font-size: 2rem;
+    cursor: pointer;
+
+    color: var(--cinza-texto);
 }
 
 /* Título */
 .evento-modal h2 {
-  margin: 1rem 0;
-  color: #1f2937;
+    margin: 1rem 0;
+    color: var(--texto);
 }
 
 /* Descrição */
 .evento-modal-descricao {
-  color: #646a75;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
+    color: var(--cinza-texto);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
 }
 
-/* Informações */
+/* Área de informações */
 .evento-modal-informacoes {
-  border-top: 1px solid #d1d5db;
-  padding-top: 1rem;
-  margin-bottom: 1.5rem;
+    border-top: 1px solid var(--cinza-borda);
+    padding-top: 1rem;
+    margin-bottom: 1.5rem;
 }
 
+/* Textos das informações */
 .evento-modal-informacoes p {
-  margin: 0.7rem 0;
-  color: #1f2937;
-}
-
-/* Indica que o card pode ser clicado */
-.event-card {
-  cursor: pointer;
-}
-
-
-/* Efeito ao passar o mouse pelo card */
-.event-card {
-  cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.event-card:hover {
-  transform: translateY(-0.4rem) scale(1.02);
-  box-shadow: 0 0.8rem 1.5rem rgba(0, 0, 0, 0.15);
+    margin: 0.7rem 0;
+    color: var(--texto);
 }

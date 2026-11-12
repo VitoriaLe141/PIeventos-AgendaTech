@@ -1,3 +1,8 @@
+/* ==========================================
+   CONEXÃO SQLITE
+   Configura e abre o arquivo do banco SQLite.
+   ========================================== */
+
 import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
 import dotenv from 'dotenv';
@@ -16,6 +21,8 @@ const DB_PATH = path.join(
     __dirname,
     `../${DB_DATABASE}.db`
 );
+
+// Abre a conexão com o arquivo do banco SQLite.
 
 export const getDbConnection = async (forceRefresh = false) => {
 

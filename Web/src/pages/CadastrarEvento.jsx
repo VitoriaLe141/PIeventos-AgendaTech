@@ -1,3 +1,9 @@
+/* ==========================================
+   PÁGINA: Cadastrar evento
+   Exibe o formulário usado pelo professor para
+   cadastrar um novo evento.
+   ========================================== */
+
 import { useState } from "react";
 
 import "../styles/paginaInicial.css";
@@ -5,6 +11,7 @@ import "../styles/paginasInternas.css";
 
 import Sidebar from "../components/Sidebar";
 
+// Monta o formulário usado pelo professor para criar um evento.
 function CadastrarEvento({ usuario, aoNavegar, aoSair }) {
 
     // Guarda as informações digitadas no formulário
@@ -16,10 +23,17 @@ function CadastrarEvento({ usuario, aoNavegar, aoSair }) {
     const [local, setLocal] = useState("");
     const [vagas, setVagas] = useState("");
 
+    // Controla a exibição do modal de sucesso
+    const [modalAberto, setModalAberto] = useState(false);
+
+    // Guarda a mensagem que será exibida no modal
+    const [mensagemModal, setMensagemModal] = useState("");
+
     // Envia os dados do evento para o backend
     async function cadastrarEvento(e) {
         e.preventDefault();
 
+        // Organiza as informações preenchidas no formulário
         const novoEvento = {
             titulo,
             descricao,
@@ -27,10 +41,11 @@ function CadastrarEvento({ usuario, aoNavegar, aoSair }) {
             data,
             horario,
             local,
-            vagas: Number(vagas),
+            vagas: Number(vagas)
         };
 
         try {
+            // Envia os dados para a rota de cadastro de eventos
             const resposta = await fetch("http://localhost:3000/eventos", {
                 method: "POST",
                 headers: {
@@ -40,16 +55,20 @@ function CadastrarEvento({ usuario, aoNavegar, aoSair }) {
                 body: JSON.stringify(novoEvento)
             });
 
+            // Converte a resposta do servidor para JSON
             const resultado = await resposta.json();
 
+            // Verifica se o cadastro apresentou algum erro
             if (!resposta.ok) {
-                alert(resultado.Error || "Não foi possível cadastrar o evento.");
+                alert(
+                    resultado.Error ||
+                    resultado.message ||
+                    "Não foi possível cadastrar o evento."
+                );
                 return;
             }
 
-            alert("Evento cadastrado com sucesso!");
-
-            // Limpa os campos depois do cadastro
+            // Limpa os campos depois que o evento for cadastrado
             setTitulo("");
             setDescricao("");
             setCategoria("");
@@ -58,8 +77,13 @@ function CadastrarEvento({ usuario, aoNavegar, aoSair }) {
             setLocal("");
             setVagas("");
 
+            // Prepara a mensagem de sucesso e abre o modal
+            setMensagemModal("Seu evento foi cadastrado com sucesso!");
+            setModalAberto(true);
+
         } catch (error) {
-            console.log(error);
+            // Avisa caso o servidor não responda
+            console.log("Erro ao cadastrar evento:", error);
             alert("Erro ao conectar com o servidor.");
         }
     }
@@ -85,7 +109,7 @@ function CadastrarEvento({ usuario, aoNavegar, aoSair }) {
                     </p>
                 </header>
 
-                {/* Card com o formulário */}
+                {/* Card com o formulário centralizado */}
                 <section className="perfil-card card-cadastro-evento">
 
                     <form
@@ -93,6 +117,7 @@ function CadastrarEvento({ usuario, aoNavegar, aoSair }) {
                         onSubmit={cadastrarEvento}
                     >
 
+                        {/* Campo para o título do evento */}
                         <div>
                             <label htmlFor="titulo">Título do evento</label>
                             <input
@@ -104,6 +129,7 @@ function CadastrarEvento({ usuario, aoNavegar, aoSair }) {
                             />
                         </div>
 
+                        {/* Campo para a descrição do evento */}
                         <div>
                             <label htmlFor="descricao">Descrição</label>
                             <textarea
@@ -115,18 +141,23 @@ function CadastrarEvento({ usuario, aoNavegar, aoSair }) {
                             />
                         </div>
 
+                        {/* Campo para selecionar a categoria */}
                         <div>
                             <label htmlFor="categoria">Categoria</label>
-                            <input
+                            <select
                                 id="categoria"
-                                type="text"
-                                placeholder="Ex.: Palestra, Workshop..."
                                 value={categoria}
                                 onChange={(e) => setCategoria(e.target.value)}
                                 required
-                            />
+                            >
+                                <option value="">Selecione uma categoria</option>
+                                <option value="Palestra">Palestra</option>
+                                <option value="Workshop">Workshop</option>
+                                <option value="Feira">Feira</option>
+                            </select>
                         </div>
 
+                        {/* Campo para a data do evento */}
                         <div>
                             <label htmlFor="data">Data</label>
                             <input
@@ -138,6 +169,7 @@ function CadastrarEvento({ usuario, aoNavegar, aoSair }) {
                             />
                         </div>
 
+                        {/* Campo para o horário do evento */}
                         <div>
                             <label htmlFor="horario">Horário</label>
                             <input
@@ -149,6 +181,7 @@ function CadastrarEvento({ usuario, aoNavegar, aoSair }) {
                             />
                         </div>
 
+                        {/* Campo para o local do evento */}
                         <div>
                             <label htmlFor="local">Local</label>
                             <input
@@ -160,6 +193,7 @@ function CadastrarEvento({ usuario, aoNavegar, aoSair }) {
                             />
                         </div>
 
+                        {/* Campo para a quantidade de vagas */}
                         <div>
                             <label htmlFor="vagas">Quantidade de vagas</label>
                             <input
@@ -172,6 +206,7 @@ function CadastrarEvento({ usuario, aoNavegar, aoSair }) {
                             />
                         </div>
 
+                        {/* Botão para enviar o formulário */}
                         <button type="submit">
                             Cadastrar evento
                         </button>
@@ -180,8 +215,41 @@ function CadastrarEvento({ usuario, aoNavegar, aoSair }) {
                 </section>
 
             </main>
+
+            {/* Modal exibido quando o evento é cadastrado com sucesso */}
+            {modalAberto && (
+                <div className="modal-fundo">
+                    <div
+                        className="modal-mensagem"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="titulo-modal"
+                    >
+
+                        {/* Ícone de confirmação */}
+                        <div className="modal-icone sucesso">
+                            <span>✓</span>
+                        </div>
+
+                        {/* Título e mensagem do modal */}
+                        <h2 id="titulo-modal">Evento cadastrado!</h2>
+                        <p>{mensagemModal}</p>
+
+                        {/* Fecha o modal */}
+                        <button
+                            type="button"
+                            onClick={() => setModalAberto(false)}
+                        >
+                            Continuar
+                        </button>
+
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 }
 
+// Exporta a página para ser usada no App.jsx
 export default CadastrarEvento;

@@ -1,5 +1,13 @@
+/* ==========================================
+   UTILITÁRIOS SQL
+   Monta os campos e parâmetros usados nas consultas
+   SQL criadas pelos models.
+   ========================================== */
+
 let sql_fields = [];
 let sql_values = [];
+
+// Separa os nomes dos campos e os valores recebidos.
 
 export function extrair_dados(payload){
   sql_fields = [];
@@ -14,6 +22,8 @@ export function extrair_dados(payload){
   sql_fields.pop();
 }
 
+// Monta a lista de nomes das colunas para o comando SQL.
+
 export function gerar_sqlFields(){
   let aux = "";
   for ( var i = 0; i < sql_fields.length ; i++  ){
@@ -21,6 +31,8 @@ export function gerar_sqlFields(){
   }
   return aux;
 }
+
+// Monta os sinais de interrogação usados nos parâmetros SQL.
 
 export function gerar_sqlParams(){
   let aux = "";
@@ -36,6 +48,8 @@ export function gerar_sqlParams(){
   return aux;
 }
 
+// Monta os campos e valores usados em uma atualização SQL.
+
 export function gerar_sqlSets(){
   var aux = "";
   for ( var i = 0; i < sql_fields.length ; i++  ){
@@ -48,6 +62,8 @@ export function gerar_sqlSets(){
   }
   return aux;
 }
+
+// Devolve a lista de valores separados para a consulta SQL.
 
 export function listParms(){
     return sql_values ;

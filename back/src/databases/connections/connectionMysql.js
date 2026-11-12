@@ -1,3 +1,8 @@
+/* ==========================================
+   CONEXÃO MYSQL
+   Configura a conexão e o pool de acesso ao banco MySQL.
+   ========================================== */
+
 import dotenv from 'dotenv';
 import mysql from "mysql2/promise";
 dotenv.config();
@@ -27,6 +32,8 @@ export const pool = mysql.createPool({
             database: DB_DATABASE
         });
 
+// Cria o banco MySQL caso ele ainda não exista.
+
 export const createDatabaseIfNotExists = async () => {
 
     const connection = await mysql.createConnection({
@@ -44,6 +51,8 @@ export const createDatabaseIfNotExists = async () => {
 
     console.log(`Banco ${DB_DATABASE} verificado/criado.`);
 };
+
+// Testa se a conexão com o MySQL está funcionando.
 
 export async function testConnection() {
     try {

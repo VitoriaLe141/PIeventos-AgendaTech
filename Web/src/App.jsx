@@ -1,4 +1,3 @@
-
 /* ==========================================
    COMPONENTE PRINCIPAL: App
    Controla qual página será exibida.
@@ -6,7 +5,7 @@
    compartilhadas entre as páginas do sistema.
    ========================================== */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Importa as páginas do projeto
 import Login from "./pages/Login";
@@ -14,11 +13,13 @@ import PaginaInicial from "./pages/PaginaInicial";
 import MeuPerfil from "./pages/MeuPerfil";
 import Favoritos from "./pages/Favoritos";
 import MinhasInscricoes from "./pages/MinhasInscricoes";
+import AlunosInscritos from "./pages/AlunosInscritos";
 import Sidebar from "./components/Sidebar";
 import CadastrarEvento from "./pages/CadastrarEvento";
 import MeusEventos from "./pages/MeusEventos";
 import InicioProfessor from "./pages/InicioProfessor";
 
+// Controla o login, a navegação e as páginas do sistema.
 function App() {
 
     // Controla se o usuário está autenticado
@@ -34,6 +35,55 @@ function App() {
     const [favoritos, setFavoritos] = useState([]);
     const [inscricoes, setInscricoes] = useState([]);
 
+    // ==========================================
+    // BUSCAR INSCRIÇÕES DO ALUNO
+    // ==========================================
+
+    // Carrega as inscrições salvas no banco quando o aluno entra
+    useEffect(() => {
+
+        // Se não existir um aluno logado, não realiza a busca
+        if (!usuario || usuario.role !== "aluno") {
+            return;
+        }
+
+        // Busca as inscrições do aluno no backend
+        async function buscarInscricoes() {
+            try {
+                const resposta = await fetch(
+                    "http://localhost:3000/inscricoes/minhas",
+                    {
+                        headers: {
+                            "Authorization": `Bearer ${sessionStorage.getItem("token")}`
+                        }
+                    }
+                );
+
+                const resultado = await resposta.json();
+
+                // Verifica se ocorreu algum erro na busca
+                if (!resposta.ok) {
+                    throw new Error(
+                        resultado.message || "Não foi possível buscar suas inscrições."
+                    );
+                }
+
+                // Guarda somente os IDs dos eventos inscritos
+                const ids = (resultado.data || []).map((item) =>
+                    Number(item.eventoId)
+                );
+
+                setInscricoes(ids);
+
+            } catch (error) {
+                // Registra o erro no console
+                console.log("Erro ao buscar inscrições:", error);
+            }
+        }
+
+        buscarInscricoes();
+
+    }, [usuario]);
 
     // ==========================================
     // FAVORITAR E INSCREVER
@@ -50,17 +100,52 @@ function App() {
         }
     }
 
-    // Realiza ou cancela a inscrição em um evento
-    function alternarInscricao(id) {
-        if (inscricoes.includes(id)) {
-            setInscricoes(
-                inscricoes.filter((idInscrito) => idInscrito !== id)
+    // Salva uma inscrição nova ou cancela uma inscrição existente
+    async function alternarInscricao(id) {
+        const idEvento = Number(id);
+        const jaInscrito = inscricoes.includes(idEvento);
+
+        try {
+            // Escolhe o método conforme a situação do aluno
+            const resposta = await fetch(
+                `http://localhost:3000/inscricoes/${idEvento}`,
+                {
+                    method: jaInscrito ? "DELETE" : "POST",
+                    headers: {
+                        "Authorization": `Bearer ${sessionStorage.getItem("token")}`
+                    }
+                }
             );
-        } else {
-            setInscricoes([...inscricoes, id]);
+
+            const resultado = await resposta.json();
+
+            // Mostra uma mensagem somente se houver erro
+            if (!resposta.ok) {
+                alert(
+                    resultado.Error ||
+                    resultado.message ||
+                    "Não foi possível alterar a inscrição."
+                );
+                return;
+            }
+
+            // Atualiza a lista na tela depois que o banco confirma a ação
+            if (jaInscrito) {
+                setInscricoes(
+                    inscricoes.filter((idInscrito) => idInscrito !== idEvento)
+                );
+            } else {
+                setInscricoes([...inscricoes, idEvento]);
+            }
+
+            // Não exibe notificação quando a inscrição é realizada ou cancelada.
+
+        } catch (error) {
+            // Registra o erro no console e avisa caso o servidor não responda
+            console.log("Erro ao alterar inscrição:", error);
+            alert("Não foi possível conectar ao servidor.");
         }
     }
-
 
     // ==========================================
     // SAIR DO SISTEMA
@@ -81,7 +166,6 @@ function App() {
         setInscricoes([]);
     }
 
-
     // ==========================================
     // TELA DE LOGIN
     // ==========================================
@@ -100,7 +184,6 @@ function App() {
             />
         );
     }
-
 
     // ==========================================
     // ÁREA DO PROFESSOR
@@ -145,21 +228,15 @@ function App() {
                         <MeusEventos usuario={usuario} />
                     )}
 
-                    {/* Página de alunos inscritos */}
+                    {/* Página com a lista de alunos inscritos */}
                     {pagina === "inscritos" && (
-                        <header className="boas-vindas">
-                            <h1>Alunos inscritos</h1>
-                            <p>
-                                Acompanhe os alunos inscritos nos seus eventos.
-                            </p>
-                        </header>
+                        <AlunosInscritos />
                     )}
 
                 </main>
             </div>
         );
     }
-
 
     // ==========================================
     // PÁGINAS DO ALUNO LOGADO

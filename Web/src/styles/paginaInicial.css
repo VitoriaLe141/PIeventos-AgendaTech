@@ -1,12 +1,6 @@
-/* ==========================================
-   AGENDA TECH - PÁGINA INICIAL
-
-   Folha de estilos da página principal.
-   ========================================== */
-
 
 /* ==========================================
-   1. MENU LATERAL (SIDEBAR)
+   AGENDA TECH - MENU LATERAL (SIDEBAR)
    ========================================== */
 
 /* Estrutura principal da barra lateral */
@@ -50,7 +44,6 @@
 .sidebar-avatar {
     width: 48px;
     height: 48px;
-
     border-radius: 50%;
 }
 
@@ -75,7 +68,6 @@
 /* Links do menu */
 .sidebar-link {
     display: block;
-
     padding: 12px 14px;
 
     color: var(--cinza-texto);
@@ -106,14 +98,13 @@
 .sidebar-footer {
     margin-top: auto;
     padding-top: 15px;
-
     border-top: 1px solid var(--cinza-borda);
 }
 
- 
 
 /* ==========================================
-   2. LAYOUT DA PÁGINA
+   AGENDA TECH - PÁGINA INICIAL
+   Estrutura e elementos principais
    ========================================== */
 
 /* Fundo cinza claro da página inteira */
@@ -122,16 +113,14 @@
     background-color: var(--cinza-fundo);
 }
 
-/* Área principal: o margin-left de 260px é a largura da sidebar,
-   senão o conteúdo ficaria escondido embaixo dela */
+/* Área principal: deixa espaço para a sidebar */
 .conteudo {
     margin-left: 260px;
     padding: 32px;
 }
 
-
 /* ==========================================
-   3. BOAS-VINDAS
+   BOAS-VINDAS
    ========================================== */
 
 .boas-vindas h1 {
@@ -145,15 +134,23 @@
     color: var(--cinza-texto);
 }
 
+/* ==========================================
+   MENSAGENS DA PÁGINA
+   ========================================== */
+
+/* Mensagem de nenhum evento encontrado */
+.sem-eventos {
+    margin-top: 28px;
+    font-size: 1rem;
+    color: var(--cinza-texto);
+}
 
 
 /* ==========================================
-   4. CARDS DE EVENTOS
+   AGENDA TECH - CARDS DE EVENTOS
    ========================================== */
 
-/* Lista que organiza os cards em colunas.
-   O auto-fill coloca quantos cards couberem na linha,
-   cada um com no mínimo 260px de largura */
+/* Lista que organiza os cards em colunas */
 .lista-eventos {
     margin-top: 28px;
 
@@ -195,21 +192,17 @@
     color: var(--cinza-texto);
 }
 
-/* O margin-top: auto empurra o botão para o fim do card,
-   assim todos os botões ficam alinhados */
+/* Mantém os botões alinhados no final dos cards */
 .event-card .btn-principal {
     margin-top: auto;
 }
 
 
-
 /* ==========================================
-   5. FILTROS (BUSCA, CATEGORIA E ORDENAÇÃO)
+   AGENDA TECH - FILTROS DE EVENTOS
    ========================================== */
 
-/* Linha que reúne a busca e os dois selects.
-   O flex-wrap faz os campos descerem para a linha
-   de baixo quando a tela fica pequena */
+/* Linha que reúne a busca e os selects */
 .filtros {
     margin-top: 28px;
 
@@ -218,7 +211,7 @@
     gap: 12px;
 }
 
-/* Campo de busca (ocupa o espaço que sobrar) */
+/* Campo de busca */
 .filtro-busca {
     flex: 1;
     min-width: 220px;
@@ -232,7 +225,7 @@
     color: var(--texto);
 }
 
-/* Campos de seleção (categoria e ordenação) */
+/* Campos de seleção */
 .filtro-select {
     padding: 12px 14px;
 
@@ -251,12 +244,4 @@
 .filtro-select:focus {
     outline: none;
     border-color: var(--vermelho);
-}
-
-/* Mensagem de "nenhum evento encontrado" */
-.sem-eventos {
-    margin-top: 28px;
-
-    font-size: 1rem;
-    color: var(--cinza-texto);
 }

@@ -1,5 +1,13 @@
+/* ==========================================
+   MODEL: DEPENDÊNCIAS
+   Contém as consultas SQL usadas para buscar,
+   cadastrar, atualizar e excluir dependências.
+   ========================================== */
+
 import { db } from "../databases/DatabaseContext.js";
 const tableName = "dependencias";
+
+// Busca todos os registros disponíveis nessa tabela.
 
 export async function Get ( req, res)  {
     try {
@@ -13,6 +21,8 @@ export async function Get ( req, res)  {
     }
 }
 
+// Busca um registro específico usando o ID recebido.
+
 export async function GetById(id){
     try {
         const results = await db.execute(
@@ -25,6 +35,8 @@ export async function GetById(id){
     }
 }
 
+// Remove o registro identificado pelo ID recebido.
+
 export async function Delete(id){
     try {
         const results = await db.execute(
@@ -36,6 +48,8 @@ export async function Delete(id){
        return {"message": "error", "Error": error.message} 
     }
 }
+
+// Cadastra um novo registro usando os dados recebidos.
 
 export async function Post( data ){
     try {
@@ -52,6 +66,8 @@ export async function Post( data ){
     }
 
 }
+
+// Atualiza os dados de um registro já existente.
 
 export async function Put( data, id ){
     try {

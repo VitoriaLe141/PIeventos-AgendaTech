@@ -1,3 +1,9 @@
+/* ==========================================
+   MIDDLEWARE: AUTENTICAÇÃO
+   Verifica o token recebido e identifica o usuário
+   que está fazendo a requisição.
+   ========================================== */
+
 
 import jwt from "jsonwebtoken";
 

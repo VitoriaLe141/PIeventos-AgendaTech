@@ -19,6 +19,8 @@ const TAMANHO_SENHA = 20;
 // Endereço do backend
 const URL_SERVIDOR = "http://localhost:3000";
 
+// Monta a tela de entrada do AgendaTech.
+
 function Login({ aoEntrar }) {
 
   /* ---------- VARIÁVEIS DE ESTADO ---------- */

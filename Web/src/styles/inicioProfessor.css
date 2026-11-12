@@ -1,13 +1,19 @@
+
 /* ==========================================
    INÍCIO DO PROFESSOR
    Estilos do painel principal do professor.
    ========================================== */
 
+
+/* ---------- ESTRUTURA PRINCIPAL ---------- */
+
 .inicio-professor {
     width: 100%;
 }
 
-/* Boas-vindas e botão de cadastro */
+
+/* ---------- BOAS-VINDAS E BOTÃO DE CADASTRO ---------- */
+
 .professor-boas-vindas {
     display: flex;
     align-items: center;
@@ -52,7 +58,9 @@
     background: var(--vermelho-escuro);
 }
 
-/* Cards com os números do painel */
+
+/* ---------- CARDS DE RESUMO ---------- */
+
 .professor-resumo {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -80,7 +88,7 @@
     width: 2.8rem;
     height: 2.8rem;
     border-radius: 0.8rem;
-    background: #fce8e8;
+    background: var(--vermelho-claro);
     color: var(--vermelho);
     font-size: 1.5rem;
     font-weight: 700;
@@ -102,7 +110,9 @@
     font-size: 1.7rem;
 }
 
-/* Seções do painel */
+
+/* ---------- SEÇÕES DO PAINEL ---------- */
+
 .professor-secao {
     margin-top: 2.25rem;
 }
@@ -120,7 +130,9 @@
     font-size: 1.25rem;
 }
 
-/* Atalhos de navegação */
+
+/* ---------- ATALHOS DE NAVEGAÇÃO ---------- */
+
 .professor-atalhos {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -144,7 +156,7 @@
 
 .professor-atalho:hover {
     transform: translateY(-0.2rem);
-    border-color: #e9aaaa;
+    border-color: var(--vermelho-claro);
     box-shadow: var(--sombra);
 }
 
@@ -169,7 +181,9 @@
     font-size: 1.5rem;
 }
 
-/* Lista dos próximos eventos */
+
+/* ---------- PRÓXIMOS EVENTOS ---------- */
+
 .professor-link-ver {
     border: none;
     background: transparent;
@@ -239,12 +253,15 @@
 .professor-evento-vagas {
     padding: 0.4rem 0.7rem;
     border-radius: 2rem;
-    background: #fce8e8;
+    background: var(--vermelho-claro);
     color: var(--vermelho);
     font-size: 0.78rem;
     font-weight: 600;
     white-space: nowrap;
 }
+
+
+/* ---------- MENSAGENS E ESTADOS ---------- */
 
 .professor-mensagem {
     padding: 1.5rem;
@@ -270,7 +287,10 @@
     color: var(--vermelho);
 }
 
-/* Ajustes para tablets e celulares */
+
+/* ---------- RESPONSIVIDADE ---------- */
+
+/* Ajusta os cards em telas menores */
 @media (max-width: 60rem) {
     .professor-resumo,
     .professor-atalhos {
@@ -278,6 +298,7 @@
     }
 }
 
+/* Ajusta o painel para celulares */
 @media (max-width: 40rem) {
     .professor-boas-vindas {
         align-items: flex-start;

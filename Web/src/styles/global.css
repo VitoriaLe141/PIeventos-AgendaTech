@@ -1,57 +1,75 @@
+/* ==========================================
+   ESTILOS GLOBAIS
+   Define as cores e os estilos básicos
+   compartilhados por todo o frontend.
+   ========================================== */
+
+
+/* ---------- VARIÁVEIS GLOBAIS ---------- */
+
 :root {
-  --vermelho: #d11b1b;
-  --vermelho-escuro: #971919;
-  --branco: #ffffff;
-  --cinza-fundo: #f3f4f6;
-  --cinza-borda: #d1d5db;
-  --cinza-texto: #646a75;
-  --texto: #1f2937;
+    /* Cores principais */
+    --vermelho: #d11b1b;
+    --vermelho-escuro: #971919;
+    --branco: #ffffff;
 
-  --raio: 12px; /*deixa os cantos arredondados*/
-  --sombra: 0 8px 24px rgba(0, 0, 0, 0.08); /*sombra suave*/
+    /* Cores neutras */
+    --cinza-fundo: #f3f4f6;
+    --cinza-borda: #d1d5db;
+    --cinza-texto: #646a75;
+    --texto: #1f2937;
+
+    /* Padrões visuais */
+    --raio: 12px;
+    --sombra: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
+
+/* ---------- CONFIGURAÇÕES GERAIS ---------- */
+
+/* Faz o tamanho dos elementos incluir bordas e espaçamentos */
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-/*O box-sizing faz o tamanho incluir o padding e a borda*/
-
+/* Define a fonte, o fundo e a cor padrão do texto */
 body {
-  font-family: "Segoe UI", Arial, sans-serif;
-  background: var(--cinza-fundo);
-  color: var(--texto);
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--cinza-fundo);
+    color: var(--texto);
 }
 
-  /* ---------- BOTÃO PRINCIPAL ---------- */ 
 
+/* ---------- BOTÃO PRINCIPAL ---------- */
+
+/* Estilo padrão dos botões de ação do sistema */
 .btn-principal {
-  width: 100%;
-  padding: 12px;
-  background: var(--vermelho);
-  color: var(--branco);
-  border: none;
-  border-radius: var(--raio);
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
+    width: 100%;
+    padding: 12px;
+    background: var(--vermelho);
+    color: var(--branco);
+    border: none;
+    border-radius: var(--raio);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
 }
 
+/* Escurece o botão quando o mouse passa por cima */
 .btn-principal:hover {
-  background: var(--vermelho-escuro);
+    background: var(--vermelho-escuro);
 }
 
+/* Diminui levemente o botão quando ele é pressionado */
 .btn-principal:active {
-  transform: scale(0.98);
+    transform: scale(0.98);
 }
- /* Quando clico, o botão diminui um pouquinho (efeito de apertar) */
 
-
+/* Altera a aparência quando o botão está desabilitado */
 .btn-principal:disabled {
-  background: var(--cinza-borda);
-  cursor: not-allowed;
+    background: var(--cinza-borda);
+    cursor: not-allowed;
 }
- /*Quando o botão está desabilitado, ele fica cinza*/

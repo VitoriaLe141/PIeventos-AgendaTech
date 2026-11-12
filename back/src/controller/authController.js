@@ -1,3 +1,9 @@
+/* ==========================================
+   CONTROLLER: AUTENTICAÇÃO
+   Cuida do cadastro e do login dos usuários,
+   conferindo os dados e criando o token de acesso.
+   ========================================== */
+
 
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";

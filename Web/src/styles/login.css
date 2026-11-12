@@ -1,3 +1,4 @@
+
 /* ==========================================
    ESTILOS DA TELA DE LOGIN
    ========================================== */
@@ -7,15 +8,14 @@
    1. FUNDO DA PÁGINA
    ========================================== */
 
-/* O min-height: 100vh faz o fundo ocupar a tela inteira.
-   Com flex, eu centralizo o painel no meio da tela.
-   O fundo é cinza claro com dois detalhes em vermelho nos cantos */
 .login-fundo {
   min-height: 100vh;
   display: flex;
-  align-items: center; /* centraliza na vertical */
-  justify-content: center; /* centraliza na horizontal */
-  padding: 16px;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+
+  /* Fundo cinza com detalhes vermelhos nos cantos */
   background:
     radial-gradient(circle at 10% 10%, rgba(214, 40, 40, 0.12) 0, transparent 40%),
     radial-gradient(circle at 90% 90%, rgba(214, 40, 40, 0.1) 0, transparent 40%),
@@ -27,25 +27,25 @@
    2. PAINEL BRANCO
    ========================================== */
 
-/* O painel tem no máximo 400px de largura e cantos arredondados.
-   Em telas pequenas (celular), ele ocupa a largura disponível */
 .login-painel {
   width: 100%;
-  max-width: 400px;
+  max-width: 25rem;
+  padding: 2rem;
+
   background: var(--branco);
-  padding: 32px;
-  border-radius: 20px;
+  border-radius: 1.25rem;
   box-shadow: var(--sombra);
-  animation: aparecer 0.4s ease; /* chama a animação que criei logo abaixo */
+
+  animation: aparecer 0.4s ease;
 }
 
-/* Animação de entrada: o painel começa transparente e um pouco
-   para baixo, e vai subindo até ficar na posição normal */
+/* Animação de entrada do painel */
 @keyframes aparecer {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(0.75rem);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -59,34 +59,35 @@
 
 .login-topo {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
 }
 
-/* Quadradinho vermelho com as letras PI.
-   O margin 0 auto centraliza ele na horizontal */
+/* Quadradinho vermelho com as letras PI */
 .logo {
-  width: 56px;
-  height: 56px;
-  margin: 0 auto 12px;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin: 0 auto 0.75rem;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   background: var(--vermelho);
   color: var(--branco);
   font-weight: 700;
   font-size: 1.3rem;
-  border-radius: 16px;
+  border-radius: 1rem;
 }
 
 .login-topo h1 {
   font-size: 1.6rem;
 }
 
-/* Frase em cinza embaixo do nome */
+/* Frase abaixo do título */
 .login-topo p {
   color: var(--cinza-texto);
   font-size: 0.9rem;
-  margin-top: 4px;
+  margin-top: 0.25rem;
 }
 
 
@@ -94,12 +95,12 @@
    4. CAMPOS (RÓTULO + INPUT + ERRO)
    ========================================== */
 
-/* Deixa o rótulo, o input e o erro um embaixo do outro (coluna) */
+/* Organiza o rótulo, o input e o erro em coluna */
 .campo {
   display: flex;
   flex-direction: column;
-  gap: 6px; /* espaço entre os elementos */
-  margin-bottom: 16px;
+  gap: 0.375rem;
+  margin-bottom: 1rem;
 }
 
 .campo label {
@@ -107,38 +108,38 @@
   font-weight: 600;
 }
 
-/* Visual normal do input: borda cinza e cantos arredondados */
+/* Aparência dos campos de entrada */
 .campo input {
-  padding: 12px;
+  padding: 0.75rem;
   border: 1px solid var(--cinza-borda);
   border-radius: var(--raio);
   font-size: 1rem;
-  outline: none; /* tira a borda azul padrão do navegador */
+  outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-/* Quando eu clico no campo (foco), a borda fica vermelha com um brilho */
+/* Destaque ao clicar no campo */
 .campo input:focus {
   border-color: var(--vermelho);
   box-shadow: 0 0 0 3px rgba(214, 40, 40, 0.15);
 }
 
-/* Classe que o React coloca quando existe um erro no campo */
+/* Campo que apresenta erro */
 .campo input.com-erro {
   border-color: var(--vermelho);
 }
 
-/* Mensagem de erro que vem do servidor (ex: RA ou senha incorretos) */
+/* Mensagem de erro do login */
 .msg-erro-login {
-  margin-top: 12px;
+  margin-top: 0.75rem;
   text-align: center;
   color: var(--vermelho);
   font-size: 0.9rem;
 }
 
-/* Mensagem de sucesso, em verde */
+/* Mensagem de sucesso */
 .msg-sucesso {
-  margin-top: 12px;
+  margin-top: 0.75rem;
   text-align: center;
   color: #15803d;
   font-size: 0.9rem;
@@ -149,7 +150,7 @@
    5. BOTÃO DE MOSTRAR/OCULTAR SENHA
    ========================================== */
 
-/* A área da senha serve de referência para o olhinho */
+/* Serve como referência para posicionar o botão */
 .campo-senha {
   position: relative;
 }
@@ -157,31 +158,28 @@
 /* Posiciona o botão dentro do campo de senha */
 .btn-olho {
   position: absolute;
-  right: 10px;
-  top: 34px;
+  right: 0.625rem;
+  top: 2.125rem;
 
-  /* Centraliza o desenho do olho */
   display: flex;
   align-items: center;
   justify-content: center;
 
-  /* Deixa o botão sem fundo e sem borda */
   background: transparent;
   border: none;
-  padding: 4px;
+  padding: 0.25rem;
 
-  /* Usa as cores que já existem no projeto */
   color: var(--cinza-texto);
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 0.375rem;
 }
 
-/* Muda a cor quando o mouse passa pelo botão */
+/* Muda a cor ao passar o mouse */
 .btn-olho:hover {
   color: var(--vermelho);
 }
 
-/* Mostra onde o botão está quando usamos o teclado */
+/* Destaque ao navegar pelo teclado */
 .btn-olho:focus-visible {
   outline: 2px solid var(--vermelho);
   outline-offset: 2px;
@@ -193,7 +191,7 @@
    ========================================== */
 
 .login-rodape {
-  margin-top: 24px;
+  margin-top: 1.5rem;
   text-align: center;
   font-size: 0.8rem;
   color: var(--cinza-texto);

@@ -1,3 +1,4 @@
+
 /* ==========================================
    PÁGINA: Minhas inscrições
    Mostra os eventos em que o aluno se inscreveu,
@@ -5,19 +6,21 @@
    Aqui também dá para cancelar a inscrição.
    ========================================== */
 
+import { useEffect, useState } from "react";
+
 // Importação dos estilos
 import "../styles/paginaInicial.css";
 import "../styles/paginasInternas.css";
 
-// Importação dos dados
-import { eventos, transformarEmData } from "../data/eventos";
+// Importação da função que organiza as datas
+import { transformarEmData } from "../data/eventos";
 
 // Importação dos componentes
 import Sidebar from "../components/Sidebar";
 import EventCard from "../components/EventCard";
 
-
-  function MinhasInscricoes({
+// Mostra os eventos em que o aluno está inscrito.
+function MinhasInscricoes({
     usuario,
     favoritos,
     inscricoes,
@@ -25,78 +28,154 @@ import EventCard from "../components/EventCard";
     aoInscrever,
     aoNavegar,
     aoSair,
-  })  {
+}) {
 
-  // 1) Fica só com os eventos em que o aluno está inscrito
-  const eventosInscritos = eventos.filter((evento) =>
-    inscricoes.includes(evento.id)
-  );
+    // Guarda os eventos recebidos do banco
+    const [eventos, setEventos] = useState([]);
 
-  // 2) Ordeno pela data (o [...lista] faz uma cópia da lista)
-  const eventosOrdenados = [...eventosInscritos].sort(
-    (a, b) => transformarEmData(a.data) - transformarEmData(b.data)
-  );
+    // Controla o carregamento e possíveis erros
+    const [carregando, setCarregando] = useState(true);
+    const [erro, setErro] = useState(false);
 
-  return (
-    <div className="pagina-inicial">
-      {/* Menu lateral (com o "Minhas inscrições" destacado) */}
-      <Sidebar
-        paginaAtual="inscricoes"
-        usuario={usuario}
-        aoNavegar={aoNavegar}
-        aoSair={aoSair}
-      />
+    // ==========================================
+    // BUSCAR EVENTOS
+    // ==========================================
 
-      <main className="conteudo">
-        <header className="boas-vindas">
-          <h1>Minhas inscrições</h1>
-          <p>Acompanhe os eventos em que você vai participar.</p>
-        </header>
+    // Consulta os eventos ativos para encontrar as inscrições do aluno
+    useEffect(() => {
 
-        {eventosOrdenados.length > 0 ? (
-          <>
-            {/* usa singular ou plural conforme a quantidade */}
-            <p className="resumo">
-              Você tem <strong>{eventosOrdenados.length}</strong>{" "}
-              {eventosOrdenados.length === 1
-                ? "inscrição ativa"
-                : "inscrições ativas"}
-              .
-            </p>
+        async function buscarEventos() {
+            try {
+                const resposta = await fetch(
+                    "http://localhost:3000/eventos"
+                );
 
-            <section className="lista-eventos">
-              {eventosOrdenados.map((evento) => (
-                <EventCard
-                  key={evento.id}
-                  titulo={evento.titulo}
-                  categoria={evento.categoria}
-                  data={evento.data}
-                  local={evento.local}
-                  vagas={evento.vagas}
-                  favorito={favoritos.includes(evento.id)}
-                  inscrito={true} /* sempre true: esta lista só tem inscrições */
-                  aoFavoritar={() => aoFavoritar(evento.id)}
-                  aoInscrever={() => aoInscrever(evento.id)}
-                />
-              ))}
-            </section>
-          </>
-        ) : (
-          <section className="estado-vazio">
-            <p>Você ainda não se inscreveu em nenhum evento.</p>
-            <button
-              type="button"
-              className="btn-principal btn-auto"
-              onClick={() => aoNavegar("inicio")}
-            >
-              Ver eventos
-            </button>
-          </section>
-        )}
-      </main>
-    </div>
-  );
+                if (!resposta.ok) {
+                    throw new Error("Não foi possível buscar os eventos.");
+                }
+
+                const resultado = await resposta.json();
+
+                // Guarda os eventos recebidos do servidor
+                setEventos(resultado.data || []);
+                setErro(false);
+
+            } catch (error) {
+                console.log("Erro ao buscar eventos:", error);
+                setErro(true);
+
+            } finally {
+                setCarregando(false);
+            }
+        }
+
+        buscarEventos();
+
+    }, []);
+
+    // ==========================================
+    // FILTRAR E ORDENAR INSCRIÇÕES
+    // ==========================================
+
+    // Mantém somente os eventos em que o aluno está inscrito
+    const eventosInscritos = eventos.filter((evento) =>
+        inscricoes.includes(Number(evento.id))
+    );
+
+    // Ordena os eventos pela data sem alterar a lista original
+    const eventosOrdenados = [...eventosInscritos].sort(
+        (a, b) => transformarEmData(a.data) - transformarEmData(b.data)
+    );
+
+    // ==========================================
+    // EXIBIR A PÁGINA
+    // ==========================================
+
+    return (
+        <div className="pagina-inicial">
+
+            {/* Menu lateral com Minhas inscrições destacado */}
+            <Sidebar
+                paginaAtual="inscricoes"
+                usuario={usuario}
+                aoNavegar={aoNavegar}
+                aoSair={aoSair}
+            />
+
+            <main className="conteudo">
+
+                {/* Título da página */}
+                <header className="boas-vindas">
+                    <h1>Minhas inscrições</h1>
+                    <p>Acompanhe os eventos em que você vai participar.</p>
+                </header>
+
+                {/* Mensagem enquanto os eventos são carregados */}
+                {carregando && (
+                    <p className="sem-eventos">
+                        Carregando suas inscrições...
+                    </p>
+                )}
+
+                {/* Mensagem caso a API não consiga carregar os eventos */}
+                {!carregando && erro && (
+                    <p className="sem-eventos">
+                        Não foi possível carregar suas inscrições.
+                    </p>
+                )}
+
+                {/* Mostra a quantidade e os cards das inscrições */}
+                {!carregando && !erro && eventosOrdenados.length > 0 && (
+                    <>
+                        {/* Resumo da quantidade de inscrições */}
+                        <p className="resumo-centralizado">
+                            Você tem <strong>{eventosOrdenados.length}</strong>{" "}
+                            {eventosOrdenados.length === 1
+                                ? "inscrição ativa"
+                                : "inscrições ativas"}.
+                        </p>
+
+                        {/* Lista de eventos inscritos */}
+                        <section className="lista-eventos">
+                            {eventosOrdenados.map((evento) => (
+                                <EventCard
+                                    key={evento.id}
+                                    titulo={evento.titulo}
+                                    categoria={evento.categoria}
+                                    data={evento.data}
+                                    horario={evento.horario}
+                                    local={evento.local}
+                                    vagas={evento.vagas}
+                                    descricao={evento.descricao}
+                                    favorito={favoritos.includes(Number(evento.id))}
+                                    inscrito={true}
+                                    aoFavoritar={() => aoFavoritar(Number(evento.id))}
+                                    aoInscrever={() => aoInscrever(Number(evento.id))}
+                                />
+                            ))}
+                        </section>
+                    </>
+                )}
+
+                {/* Mostra um aviso quando o aluno ainda não tem inscrições */}
+                {!carregando && !erro && eventosOrdenados.length === 0 && (
+                    <section className="estado-vazio">
+                        <p>Você ainda não se inscreveu em nenhum evento.</p>
+
+                        <button
+                            type="button"
+                            className="btn-principal btn-auto"
+                            onClick={() => aoNavegar("inicio")}
+                        >
+                            Ver eventos
+                        </button>
+                    </section>
+                )}
+
+            </main>
+        </div>
+    );
 }
 
-
+// Exporta a página para o App.jsx
 export default MinhasInscricoes;

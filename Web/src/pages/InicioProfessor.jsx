@@ -8,6 +8,8 @@
 import { useEffect, useState } from "react";
 import "../styles/inicioProfessor.css";
 
+// Monta o painel inicial com o resumo dos eventos do professor.
+
 function InicioProfessor({ usuario, aoNavegar }) {
 
     // Guarda os eventos cadastrados pelo professor

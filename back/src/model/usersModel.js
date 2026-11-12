@@ -1,7 +1,15 @@
+/* ==========================================
+   MODEL: USUÁRIOS
+   Contém as consultas SQL usadas para buscar,
+   cadastrar, atualizar e excluir usuários.
+   ========================================== */
+
 import { db } from "../databases/DatabaseContext.js";
 import * as sqlutils from "../utils/sqlTextos.js"
 
 export const tableName = "users";
+
+// Busca todos os registros disponíveis nessa tabela.
 
 export async function Get ( req, res)  {
     try {
@@ -15,6 +23,8 @@ export async function Get ( req, res)  {
     }
 }
 
+// Busca um registro específico usando o ID recebido.
+
 export async function GetById(id){
     try {
         const results = await db.execute(
@@ -26,6 +36,8 @@ export async function GetById(id){
        return {"message": "error", "Error": error.message} 
     }
 }
+
+// Procura um usuário pelo login ou e-mail informado.
 
 export async function GetByEmail(email){
     try {
@@ -43,6 +55,8 @@ export async function GetByEmail(email){
     }
 }
 
+// Remove o registro identificado pelo ID recebido.
+
 export async function Delete(id){
     try {
         const results = await db.execute(
@@ -54,6 +68,8 @@ export async function Delete(id){
        return {"message": "error", "Error": error.message} 
     }
 }
+
+// Cadastra um novo registro usando os dados recebidos.
 
 export async function Post( data ){
     try {
@@ -74,6 +90,8 @@ export async function Post( data ){
     }
 
 }
+
+// Atualiza os dados de um registro já existente.
 
 export async function Put( data, id ){
     try {

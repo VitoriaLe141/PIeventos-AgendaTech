@@ -1,4 +1,12 @@
+/* ==========================================
+   CONTROLLER: CLIENTES
+   Recebe as requisições de clientes e encaminha
+   as operações para o model.
+   ========================================== */
+
 import * as myModel from "../model/clientesModel.js"
+
+// Retorna o nome da tabela usada pelo model.
 
 export function getTableName(){
     return myModel.tableName;
@@ -20,6 +28,8 @@ export async function Get(req,res){
     }
 }
 
+// Busca um registro específico usando o ID recebido.
+
 export async function GetById(req,res) {
     try {
         const id = req.params.id;
@@ -34,6 +44,8 @@ export async function GetById(req,res) {
     }
 }
 
+// Remove o registro identificado pelo ID recebido.
+
 export async function Delete(req,res) {
     try {
         const id = req.params.id;
@@ -47,6 +59,8 @@ export async function Delete(req,res) {
        res.status(403).json({"message":"erro", "Error": error.message});    
     }
 }
+
+// Cadastra um novo registro usando os dados recebidos.
 
 export async function Post(req,res){
     try {
@@ -65,6 +79,8 @@ export async function Post(req,res){
     }
 
 }
+
+// Atualiza os dados de um registro já existente.
 
 export async function Put(req,res){
     try {

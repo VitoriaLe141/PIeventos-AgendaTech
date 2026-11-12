@@ -1,4 +1,3 @@
-
 /* ==========================================
    PÁGINA INICIAL DO AGENDATECH
 
@@ -11,16 +10,51 @@ import { useState, useEffect } from "react";
 // Importação dos estilos
 import "../styles/paginaInicial.css";
 
-// Importação da função que organiza as datas
-import { transformarEmData } from "../data/eventos";
-
 // Importação dos componentes
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import EventFilters from "../components/EventFilters";
 import EventCard from "../components/EventCard";
 
+// Converte a data para um formato que o JavaScript consegue ordenar
+function converterData(data) {
+    if (!data) {
+        return null;
+    }
 
+    // Remove possíveis informações de horário
+    const dataLimpa = String(data).split("T")[0];
+
+    // Verifica se a data está no formato brasileiro: DD/MM/AAAA
+    if (dataLimpa.includes("/")) {
+        const partes = dataLimpa.split("/");
+
+        if (partes.length === 3) {
+            const dia = Number(partes[0]);
+            const mes = Number(partes[1]);
+            const ano = Number(partes[2]);
+
+            return new Date(ano, mes - 1, dia);
+        }
+    }
+
+    // Verifica se a data está no formato do banco: AAAA-MM-DD
+    if (dataLimpa.includes("-")) {
+        const partes = dataLimpa.split("-");
+
+        if (partes.length === 3) {
+            const ano = Number(partes[0]);
+            const mes = Number(partes[1]);
+            const dia = Number(partes[2]);
+
+            return new Date(ano, mes - 1, dia);
+        }
+    }
+
+    return null;
+}
+
+// Monta a página inicial com a lista de eventos
 function PaginaInicial({
     usuario,
     favoritos,
@@ -50,9 +84,12 @@ function PaginaInicial({
 
     useEffect(() => {
 
+        // Consulta na API os eventos que serão mostrados na página
         async function buscarEventos() {
             try {
-                const resposta = await fetch("http://localhost:3000/eventos");
+                const resposta = await fetch(
+                    "http://localhost:3000/eventos"
+                );
 
                 if (!resposta.ok) {
                     throw new Error("Não foi possível buscar os eventos.");
@@ -80,29 +117,54 @@ function PaginaInicial({
 
     /* ---------- FUNÇÕES DOS CAMPOS ---------- */
 
+    // Atualiza o texto da busca
     function aoMudarBusca(evento) {
         setBusca(evento.target.value);
     }
 
+    // Atualiza a categoria escolhida no filtro
     function aoMudarCategoria(evento) {
         setCategoria(evento.target.value);
     }
 
+    // Atualiza a forma de ordenação dos eventos
     function aoMudarOrdem(evento) {
         setOrdem(evento.target.value);
     }
+
+
+    /* ---------- CATEGORIAS DISPONÍVEIS ---------- */
+
+    // Identifica as categorias existentes nos eventos cadastrados
+    const categorias = [
+        ...new Set(
+            eventos
+                .map((evento) => String(evento.categoria || "").trim())
+                .filter((item) => item !== "")
+        )
+    ].sort((a, b) => a.localeCompare(b));
 
 
     /* ---------- FILTRAR EVENTOS ---------- */
 
     const eventosFiltrados = eventos.filter((evento) => {
 
-        const combinaComBusca = evento.titulo
-            .toLowerCase()
-            .includes(busca.toLowerCase());
+        // Compara o título com o texto digitado na busca
+        const titulo = String(evento.titulo || "").toLowerCase();
+        const textoBusca = busca.trim().toLowerCase();
+
+        const combinaComBusca = titulo.includes(textoBusca);
+
+        // Compara as categorias sem diferenciar maiúsculas e espaços
+        const categoriaEvento = String(evento.categoria || "")
+            .trim()
+            .toLowerCase();
+
+        const categoriaSelecionada = categoria.trim().toLowerCase();
 
         const combinaComCategoria =
-            categoria === "Todas" || evento.categoria === categoria;
+            categoria === "Todas" ||
+            categoriaEvento === categoriaSelecionada;
 
         return combinaComBusca && combinaComCategoria;
     });
@@ -112,16 +174,36 @@ function PaginaInicial({
 
     const eventosOrdenados = [...eventosFiltrados].sort((a, b) => {
 
+        // Ordena os eventos pelo nome, em ordem alfabética
         if (ordem === "nome") {
-            return a.titulo.localeCompare(b.titulo);
+            return String(a.titulo || "").localeCompare(
+                String(b.titulo || "")
+            );
         }
 
+        // Ordena pela quantidade de vagas, da maior para a menor
         if (ordem === "vagas") {
-            return b.vagas - a.vagas;
+            return Number(b.vagas || 0) - Number(a.vagas || 0);
         }
 
-        // Mostra primeiro os eventos com datas mais próximas
-        return transformarEmData(a.data) - transformarEmData(b.data);
+        // Organiza os eventos pela data mais próxima
+        const dataA = converterData(a.data);
+        const dataB = converterData(b.data);
+
+        // Coloca datas inválidas no final da lista
+        if (!dataA && !dataB) return 0;
+        if (!dataA) return 1;
+        if (!dataB) return -1;
+
+        // Coloca a data de hoje como referência
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
+
+        // Eventos que já passaram ficam depois dos próximos
+        const valorA = dataA < hoje ? Infinity : dataA.getTime();
+        const valorB = dataB < hoje ? Infinity : dataB.getTime();
+
+        return valorA - valorB;
     });
 
 
@@ -149,6 +231,7 @@ function PaginaInicial({
                     aoMudarBusca={aoMudarBusca}
                     categoria={categoria}
                     aoMudarCategoria={aoMudarCategoria}
+                    categorias={categorias}
                     ordem={ordem}
                     aoMudarOrdem={aoMudarOrdem}
                 />
@@ -170,20 +253,20 @@ function PaginaInicial({
                     <section className="lista-eventos">
 
                         {eventosOrdenados.map((evento) => (
-                          <EventCard
-                            key={evento.id}
-                            titulo={evento.titulo}
-                            categoria={evento.categoria}
-                            data={evento.data}
-                            horario={evento.horario}
-                            local={evento.local}
-                            vagas={evento.vagas}
-                            descricao={evento.descricao}
-                            favorito={favoritos.includes(evento.id)}
-                            inscrito={inscricoes.includes(evento.id)}
-                            aoFavoritar={() => aoFavoritar(evento.id)}
-                            aoInscrever={() => aoInscrever(evento.id)}
-                          />
+                            <EventCard
+                                key={evento.id}
+                                titulo={evento.titulo}
+                                categoria={evento.categoria}
+                                data={evento.data}
+                                horario={evento.horario}
+                                local={evento.local}
+                                vagas={evento.vagas}
+                                descricao={evento.descricao}
+                                favorito={favoritos.includes(evento.id)}
+                                inscrito={inscricoes.includes(evento.id)}
+                                aoFavoritar={() => aoFavoritar(evento.id)}
+                                aoInscrever={() => aoInscrever(evento.id)}
+                            />
                         ))}
 
                     </section>
@@ -200,7 +283,6 @@ function PaginaInicial({
         </div>
     );
 }
-
 
 // Exporta a página inicial
 export default PaginaInicial;

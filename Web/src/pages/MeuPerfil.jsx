@@ -1,4 +1,5 @@
 
+
 /* ==========================================
    PÁGINA: Meu perfil
    Mostra os dados do aluno e um resumo da
@@ -15,104 +16,114 @@ import Sidebar from "../components/Sidebar";
 
 // Dados de exemplo do aluno
 const aluno = {
-  nome: "Ana Silva",
-  tipo: "Aluno",
-  ra: "1234567890123",
-  curso: "Sistemas para Internet",
-  semestre: "4º semestre",
-  email: "ana.silva@fatec.sp.gov.br",
+    nome: "Ana Silva",
+    tipo: "Aluno",
+    ra: "1234567890123",
+    curso: "Sistemas para Internet",
+    semestre: "4º semestre",
+    email: "ana.silva@fatec.sp.gov.br",
 };
 
+// Mostra as informações do usuário conectado
 function MeuPerfil({
-  usuario,
-  favoritos,
-  inscricoes,
-  aoNavegar,
-  aoSair,
+    usuario,
+    favoritos,
+    inscricoes,
+    aoNavegar,
+    aoSair,
 }) {
-  return (
-    <div className="pagina-inicial">
+    return (
+        <div className="pagina-inicial">
 
-      {/* Menu lateral com o link "Meu perfil" destacado */}
-      <Sidebar
-        paginaAtual="perfil"
-        usuario={usuario}
-        aoNavegar={aoNavegar}
-        aoSair={aoSair}
-      />
-
-      <main className="conteudo">
-
-        {/* Título da página */}
-        <header className="boas-vindas">
-          <h1>Meu perfil</h1>
-          <p>Confira os seus dados cadastrados na Fatec.</p>
-        </header>
-
-        {/* Cartão com foto, nome e dados do aluno */}
-        <section className="perfil-card">
-
-          {/* Foto e nome do aluno */}
-          <div className="perfil-topo">
-            <img
-              src={avatar}
-              alt="Foto de perfil do usuário"
-              className="perfil-avatar"
+            {/* Menu lateral do aluno */}
+            <Sidebar
+                paginaAtual="perfil"
+                usuario={usuario}
+                aoNavegar={aoNavegar}
+                aoSair={aoSair}
             />
 
-            <div>
-              <h2>{usuario?.name || aluno.nome}</h2>
+            <main className="conteudo">
 
-              <span>
-                {usuario?.role === "professor" ? "Professor" : aluno.tipo}
-              </span>
-            </div>
-          </div>
+                {/* Área que centraliza o conteúdo do perfil */}
+                <div className="perfil-container">
 
-          {/* Lista de dados do aluno */}
-          <dl className="perfil-dados">
+                    {/* Título da página */}
+                    <header className="perfil-cabecalho">
+                        <h1>Meu perfil</h1>
+                        <p>
+                            Confira os seus dados cadastrados na Fatec.
+                        </p>
+                    </header>
 
-            <div className="perfil-dado">
-              <dt>RA</dt>
-              <dd>{aluno.ra}</dd>
-            </div>
+                    {/* Cartão principal com os dados do aluno */}
+                    <section className="perfil-card">
 
-            <div className="perfil-dado">
-              <dt>Curso</dt>
-              <dd>{aluno.curso}</dd>
-            </div>
+                        {/* Foto e identificação do usuário */}
+                        <div className="perfil-topo">
+                            <img
+                                src={avatar}
+                                alt="Foto de perfil do usuário"
+                                className="perfil-avatar"
+                            />
 
-            <div className="perfil-dado">
-              <dt>Semestre</dt>
-              <dd>{aluno.semestre}</dd>
-            </div>
+                            <div className="perfil-identificacao">
+                                <h2>{usuario?.name || aluno.nome}</h2>
 
-            <div className="perfil-dado">
-              <dt>E-mail institucional</dt>
-              <dd>{aluno.email}</dd>
-            </div>
+                                <span>
+                                    {usuario?.role === "professor"
+                                        ? "Professor"
+                                        : aluno.tipo}
+                                </span>
+                            </div>
+                        </div>
 
-          </dl>
-        </section>
+                        {/* Informações pessoais e acadêmicas */}
+                        <div className="perfil-dados">
 
-        {/* Mostra quantas inscrições e quantos favoritos o aluno tem */}
-        <section className="perfil-numeros">
+                            <div className="perfil-dado">
+                                <span>RA</span>
+                                <strong>{aluno.ra}</strong>
+                            </div>
 
-          <div className="perfil-numero">
-            <strong>{inscricoes.length}</strong>
-            <span>Inscrições</span>
-          </div>
+                            <div className="perfil-dado">
+                                <span>Curso</span>
+                                <strong>{aluno.curso}</strong>
+                            </div>
 
-          <div className="perfil-numero">
-            <strong>{favoritos.length}</strong>
-            <span>Favoritos</span>
-          </div>
+                            <div className="perfil-dado">
+                                <span>Semestre</span>
+                                <strong>{aluno.semestre}</strong>
+                            </div>
 
-        </section>
+                            <div className="perfil-dado">
+                                <span>E-mail institucional</span>
+                                <strong>{aluno.email}</strong>
+                            </div>
 
-      </main>
-    </div>
-  );
+                        </div>
+                    </section>
+
+                    {/* Resumo da atividade do aluno */}
+                    <section className="perfil-numeros">
+
+                        <div className="perfil-numero">
+                            <strong>{inscricoes.length}</strong>
+                            <span>Inscrições realizadas</span>
+                        </div>
+
+                        <div className="perfil-numero">
+                            <strong>{favoritos.length}</strong>
+                            <span>Eventos favoritos</span>
+                        </div>
+
+                    </section>
+
+                </div>
+
+            </main>
+        </div>
+    );
 }
 
 // Exporta a página

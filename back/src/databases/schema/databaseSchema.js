@@ -1,3 +1,9 @@
+/* ==========================================
+   SCHEMA DO BANCO DE DADOS
+   Lê as definições do schema.json e cria as tabelas
+   que ainda não existem no banco selecionado.
+   ========================================== */
+
 import schemaData from './schema.json' with { type: 'json' }; // Ajuste de import se necessário
 
 // O mapeador fica aqui, isolado, servindo apenas ao tradutor do Schema

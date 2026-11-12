@@ -23,6 +23,7 @@ import dependenciasRoutes from "./dependenciaRoutes.js"; // rotas de dependênci
 import rolesRoutes from "./rolesRoutes.js";             // rotas de roles (perfis)
 import usersRoles from "./usersRolesRoutes.js";         // liga usuários aos seus perfis
 import eventosRoutes from "./eventosRoutes.js";         // rotas de eventos
+import inscricoesRoutes from "./inscricoesRoutes.js";     // rotas de inscrições
 
 
 // ---------- CRIAÇÃO DO ROTEADOR ----------
@@ -46,7 +47,8 @@ swRoutes.use(estadosRoutes);
 swRoutes.use(dependenciasRoutes);
 swRoutes.use(rolesRoutes);
 swRoutes.use(usersRoles);
-swRoutes.use(eventosRoutes); 
+swRoutes.use(eventosRoutes);
+swRoutes.use(inscricoesRoutes); 
 
 
 // ---------- EXPORTAÇÃO ----------

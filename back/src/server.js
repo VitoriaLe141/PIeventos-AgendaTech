@@ -1,3 +1,9 @@
+/* ==========================================
+   SERVIDOR PRINCIPAL
+   Configura o Express, os middlewares e as rotas,
+   e inicia a API do AgendaTech.
+   ========================================== */
+
 import dotenv from "dotenv";
 import express from "express";
 import os from "os";

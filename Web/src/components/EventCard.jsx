@@ -20,6 +20,8 @@ import { useState } from "react";
 // Estilos do coração de favorito e do botão de cancelar
 import "../styles/eventCard.css";
 
+// Monta o cartão com os dados e as ações de um evento.
+
 function EventCard({
   titulo,
   categoria,
