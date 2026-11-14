@@ -7,6 +7,8 @@
 
 import { useEffect, useState } from "react";
 import "../styles/inicioProfessor.css";
+//
+import {API_URL} from "../api/apiconfig";
 
 // Monta o painel inicial com o resumo dos eventos do professor.
 
@@ -26,7 +28,7 @@ function InicioProfessor({ usuario, aoNavegar }) {
             setErro("");
 
             const resposta = await fetch(
-                "http://localhost:3000/eventos/professor/meus",
+                `${API_URL}/eventos/professor/meus`,
                 {
                     headers: {
                         "Authorization": `Bearer ${sessionStorage.getItem("token")}`

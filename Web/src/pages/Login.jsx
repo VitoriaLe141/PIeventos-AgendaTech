@@ -9,6 +9,7 @@
 import { useState } from "react";
 import CampoTexto from "../components/CampoTexto";
 import "../styles/login.css";
+import { API_URL } from "../api/apiconfig";
 
 // Quantidade de números do RA
 const TAMANHO_RA = 13;
@@ -17,7 +18,7 @@ const TAMANHO_RA = 13;
 const TAMANHO_SENHA = 20;
 
 // Endereço do backend
-const URL_SERVIDOR = "http://localhost:3000";
+const URL_SERVIDOR = API_URL;
 
 // Monta a tela de entrada do AgendaTech.
 

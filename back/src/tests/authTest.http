@@ -1,7 +1,7 @@
 ### Variáveis Globais
-@baseUrl = http://localhost:3000
-@name = Aluno Teste
-@email = 1234567890123
+@baseUrl = http://localhost:3500
+@name = teste 3
+@email = teste3@gmail.com
 @password = 123456
 
 ### Cadastro

@@ -1,0 +1,46 @@
+services:
+  # back em nodejs
+  back:
+    build: ./back
+    container_name: pieventos_back
+    #restart: always
+    restart: unless-stopped
+
+    environment:
+      - API_PORT=4001
+      - PORT=4001
+      - DB_HOST=10.0.0.25
+      - DB_USER=pifatec
+      - DB_PASSWORD=fatec@2026
+      - DB_PORT=3307
+      - DB_NAME=pieventos
+      - DB_DATABASE=pieventos
+      - DB_RESET=false
+      - DATABASE_URL=mysql://pieventos:fatec@2026@dbmaria:3307/pieventos
+      - JWT_SECRET=senhasupersecreta
+
+    ports:
+      - "13019:4001"  
+    networks:
+      - proxy_net
+
+  # Servidor Web + API/Front react 
+  web:
+    build: 
+      context: ./web
+      args:  
+        - VITE_API_URL=http://lobato:13019
+      
+    container_name: pieventos_web
+    #restart: always
+    restart: unless-stopped  
+
+    ports:
+      - "15019:80"  
+
+    networks:
+      - proxy_net
+
+networks:
+  proxy_net:
+    external: true

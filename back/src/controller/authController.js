@@ -36,6 +36,25 @@ export const register = async (req, res) => {
         password: hashedPassword
     });
 
+    console.log( response );
+    // caso a mensagem contida em reponse seja sucesso, registre uma role para o usuario atual
+    if ( response.message === "Success") {
+        const  newId = response.data[0].insertId ;
+        const irRoler = 1 ;
+
+        const newUserRole  = {
+            "iduser": newId,
+            "idroler": irRoler
+        }
+        const responseRole = await UsersRolesModel.Post(newUserRole);
+        console.log( responseRole ) ;
+        if ( responseRole.message !== "Success") {
+             return res.status(401).json({
+                message: "falha ao atrituir Roles"
+                
+            });
+        }
+    }
     return res.status(201).json(response);
 };
 
@@ -50,6 +69,8 @@ export const login = async (req, res) => {
                 message: "Informe o login e a senha."
             });
         }
+        
+        
 
         // Procura o RA ou e-mail no banco
         const user = await UserModel.GetByEmail(login.trim());
@@ -61,7 +82,7 @@ export const login = async (req, res) => {
         }
 
         const usuario = user.data[0];
-
+       
         // Confere a senha
         const senhaValida = await bcrypt.compare(
             password,
@@ -73,12 +94,13 @@ export const login = async (req, res) => {
                 message: "Senha incorreta."
             });
         }
-
+        console.log( ` perfil usuario: ${usuario.id}`)    
         // Busca o perfil do usuário
         const resultadoPerfil = await UsersRolesModel.GetRoleByUserId(
             usuario.id
         );
-
+        console.log( resultadoPerfil );
+        
         if (resultadoPerfil.message !== "Success") {
             return res.status(403).json({
                 message: "Este usuário não possui um perfil cadastrado."

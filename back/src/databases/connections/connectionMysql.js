@@ -13,9 +13,6 @@ dotenv.config();
 // const DB_DATABASE = process.env.DB_DATABASE || 'mysql';
 // const DB_PASSWORD = process.env.DB_PASSWORD || '';
 
-
-
-
 const {
     DB_HOST,
     DB_USER,
@@ -24,6 +21,7 @@ const {
     DB_DATABASE
 } = process.env;
 
+console.log( DB_HOST, DB_DATABASE, DB_PORT, DB_USER)
 export const pool = mysql.createPool({
             host: DB_HOST,
             user: DB_USER,

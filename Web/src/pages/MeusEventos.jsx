@@ -7,6 +7,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import "../styles/paginasInternas.css";
+import {API_URL} from "../api/apiconfig";
 
 // Monta a página com os eventos cadastrados pelo professor.
 function MeusEventos() {
@@ -48,7 +49,7 @@ function MeusEventos() {
     // Busca os eventos no servidor e retorna os dados encontrados
     async function obterEventos() {
         const resposta = await fetch(
-            "http://localhost:3000/eventos/professor/meus",
+            `${API_URL}/eventos/professor/meus`,
             {
                 headers: {
                     "Authorization": `Bearer ${sessionStorage.getItem("token")}`
@@ -162,7 +163,7 @@ function MeusEventos() {
 
         try {
             const resposta = await fetch(
-                `http://localhost:3000/eventos/${eventoEditando}`,
+                `${API_URL}/eventos/${eventoEditando}`,
                 {
                     method: "PUT",
                     headers: {
@@ -220,7 +221,7 @@ function MeusEventos() {
     async function confirmarExclusao() {
         try {
             const resposta = await fetch(
-                `http://localhost:3000/eventos/${idEventoExcluir}`,
+                `${API_URL}/eventos/${idEventoExcluir}`,
                 {
                     method: "DELETE",
                     headers: {

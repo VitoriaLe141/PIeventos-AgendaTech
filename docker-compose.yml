@@ -1,0 +1,46 @@
+services:
+  # back em nodejs
+  back:
+    build: ./back
+    container_name: pieventos_back
+    #restart: always
+    restart: unless-stopped
+
+    environment:
+      - API_PORT=4001
+      - PORT=4001
+      - DB_HOST=dbmaria
+      - DB_USER=root
+      - DB_PASSWORD=teste@123
+      - DB_PORT=3306
+      - DB_NAME=pieventos
+      - DB_DATABASE=pieventos
+      - DB_RESET=false
+      - DATABASE_URL=mysql://root:teste@123@dbmaria:3306/pieventos
+      - JWT_SECRET=senhasupersecreta
+
+    ports:
+      - "13019:4001"  
+    networks:
+      - fatectqnet
+
+  # Servidor Web + API/Front react 
+  web:
+    build: 
+      context: ./web
+      args:  
+        - VITE_API_URL=http://localhost:13019
+      
+    container_name: pieventos_web
+    #restart: always
+    restart: unless-stopped  
+
+    ports:
+      - "15019:80"  
+
+    networks:
+      - fatectqnet
+
+networks:
+  fatectqnet:
+    external: true

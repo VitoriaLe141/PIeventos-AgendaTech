@@ -11,6 +11,8 @@ import { useEffect, useState } from "react";
 // Importação dos estilos compartilhados
 import "../styles/paginaInicial.css";
 import "../styles/paginasInternas.css";
+//
+import {API_URL} from "../api/apiconfig";
 
 function AlunosInscritos() {
 
@@ -38,7 +40,7 @@ function AlunosInscritos() {
             setErro("");
 
             const resposta = await fetch(
-                "http://localhost:3000/inscricoes/professor/meus",
+                `${API_URL}/inscricoes/professor/meus`,
                 {
                     headers: {
                         "Authorization": `Bearer ${sessionStorage.getItem("token")}`
@@ -77,7 +79,7 @@ function AlunosInscritos() {
         async function carregarDados() {
             try {
                 const resposta = await fetch(
-                    "http://localhost:3000/inscricoes/professor/meus",
+                    `${API_URL}/inscricoes/professor/meus`,
                     {
                         headers: {
                             "Authorization": `Bearer ${sessionStorage.getItem("token")}`

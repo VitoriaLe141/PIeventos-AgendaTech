@@ -31,6 +31,7 @@ export async function GetById(id){
             `SELECT * FROM ${tableName} WHERE id = ? ORDER BY id `,
             [id]
         );
+        console.log( results);
         return {"message":"Success","data":results[0]} ;
     } catch (error) {
        return {"message": "error", "Error": error.message} 
@@ -80,8 +81,6 @@ export async function Post( data ){
         const sqlParms = sqlutils.gerar_sqlParams();
         const sqlValuesParms = sqlutils.listParms();  
         const sqlTexto = `INSERT INTO ${tableName} ( ${sqlFields} ) VALUES ( ${sqlParms} )`
-        console.log( sqlTexto);
-
         const results = await db.execute( sqlTexto,  sqlValuesParms
         );
         return {"message":"Success","data":results} ;

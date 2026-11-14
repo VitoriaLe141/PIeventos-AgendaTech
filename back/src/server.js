@@ -22,21 +22,24 @@ const Port = process.env.API_PORT || 3600;
 
 const app = express();
 
+console.log( Port ) ;
 // ========================================
 // CORS
 // ========================================
 // Configuração básica: Permite todas as origens (Útil para teste, evite em produção)
 // app.use(cors());
 
-// Configuração recomendada para produção:
-const corsOptions = {
-  origin: 'http://localhost:5173', // URL padrão do seu frontend Vite
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true, // Permite o envio de cookies/headers de autenticação se necessário
-  optionsSuccessStatus: 200 
-};
+// // Configuração recomendada para produção:
+// const corsOptions = {
+//   origin: 'http://localhost:5173', // URL padrão do seu frontend Vite
+//   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+//   credentials: true, // Permite o envio de cookies/headers de autenticação se necessário
+//   optionsSuccessStatus: 200 
+// };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+
+app.use(cors());
 
 // ========================================
 // MIDDLEWARES

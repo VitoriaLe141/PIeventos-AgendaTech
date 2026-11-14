@@ -10,6 +10,8 @@ import "../styles/paginasInternas.css";
 
 import Sidebar from "../components/Sidebar";
 import EventCard from "../components/EventCard";
+//
+import {API_URL} from "../api/apiconfig";
 
 function Favoritos({
     usuario,
@@ -30,7 +32,7 @@ function Favoritos({
         async function buscarEventos() {
             try {
                 const resposta = await fetch(
-                    "http://localhost:3000/eventos",
+                    `${API_URL}/eventos`,
                     {
                         headers: {
                             "Authorization": `Bearer ${sessionStorage.getItem("token")}`

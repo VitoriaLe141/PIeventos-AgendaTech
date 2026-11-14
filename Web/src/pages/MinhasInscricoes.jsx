@@ -18,6 +18,8 @@ import { transformarEmData } from "../data/eventos";
 // Importação dos componentes
 import Sidebar from "../components/Sidebar";
 import EventCard from "../components/EventCard";
+//
+import {API_URL} from "../api/apiconfig";
 
 // Mostra os eventos em que o aluno está inscrito.
 function MinhasInscricoes({
@@ -47,7 +49,7 @@ function MinhasInscricoes({
         async function buscarEventos() {
             try {
                 const resposta = await fetch(
-                    "http://localhost:3000/eventos"
+                    `${API_URL}/eventos`
                 );
 
                 if (!resposta.ok) {

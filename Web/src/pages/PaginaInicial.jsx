@@ -15,6 +15,7 @@ import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import EventFilters from "../components/EventFilters";
 import EventCard from "../components/EventCard";
+import {API_URL} from "../api/apiconfig";
 
 // Converte a data para um formato que o JavaScript consegue ordenar
 function converterData(data) {
@@ -88,7 +89,7 @@ function PaginaInicial({
         async function buscarEventos() {
             try {
                 const resposta = await fetch(
-                    "http://localhost:3000/eventos"
+                    `${API_URL}/eventos`
                 );
 
                 if (!resposta.ok) {

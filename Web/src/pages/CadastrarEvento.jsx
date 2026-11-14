@@ -10,6 +10,8 @@ import "../styles/paginaInicial.css";
 import "../styles/paginasInternas.css";
 
 import Sidebar from "../components/Sidebar";
+//
+import {API_URL} from "../api/apiconfig";
 
 // Monta o formulário usado pelo professor para criar um evento.
 function CadastrarEvento({ usuario, aoNavegar, aoSair }) {
@@ -46,7 +48,7 @@ function CadastrarEvento({ usuario, aoNavegar, aoSair }) {
 
         try {
             // Envia os dados para a rota de cadastro de eventos
-            const resposta = await fetch("http://localhost:3000/eventos", {
+            const resposta = await fetch(`${API_URL}/eventos`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
