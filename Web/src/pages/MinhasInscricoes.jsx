@@ -1,6 +1,7 @@
 
 /* ==========================================
    PÁGINA: Minhas inscrições
+
    Mostra os eventos em que o aluno se inscreveu,
    do mais próximo para o mais distante.
    Aqui também dá para cancelar a inscrição.
@@ -37,11 +38,7 @@ function MinhasInscricoes({
     const [carregando, setCarregando] = useState(true);
     const [erro, setErro] = useState(false);
 
-    // ==========================================
-    // BUSCAR EVENTOS
-    // ==========================================
-
-    // Consulta os eventos ativos para encontrar as inscrições do aluno
+    // Busca os eventos no banco de dados
     useEffect(() => {
 
         async function buscarEventos() {
@@ -73,23 +70,15 @@ function MinhasInscricoes({
 
     }, []);
 
-    // ==========================================
-    // FILTRAR E ORDENAR INSCRIÇÕES
-    // ==========================================
-
     // Mantém somente os eventos em que o aluno está inscrito
     const eventosInscritos = eventos.filter((evento) =>
-        inscricoes.includes(Number(evento.id))
+        inscricoes.some((id) => Number(id) === Number(evento.id))
     );
 
     // Ordena os eventos pela data sem alterar a lista original
     const eventosOrdenados = [...eventosInscritos].sort(
         (a, b) => transformarEmData(a.data) - transformarEmData(b.data)
     );
-
-    // ==========================================
-    // EXIBIR A PÁGINA
-    // ==========================================
 
     return (
         <div className="pagina-inicial">
@@ -137,22 +126,34 @@ function MinhasInscricoes({
 
                         {/* Lista de eventos inscritos */}
                         <section className="lista-eventos">
-                            {eventosOrdenados.map((evento) => (
-                                <EventCard
-                                    key={evento.id}
-                                    titulo={evento.titulo}
-                                    categoria={evento.categoria}
-                                    data={evento.data}
-                                    horario={evento.horario}
-                                    local={evento.local}
-                                    vagas={evento.vagas}
-                                    descricao={evento.descricao}
-                                    favorito={favoritos.includes(Number(evento.id))}
-                                    inscrito={true}
-                                    aoFavoritar={() => aoFavoritar(Number(evento.id))}
-                                    aoInscrever={() => aoInscrever(Number(evento.id))}
-                                />
-                            ))}
+                            {eventosOrdenados.map((evento) => {
+
+                                // Calcula as vagas disponíveis considerando as inscrições
+                                const vagasDisponiveis = Math.max(
+                                    0,
+                                    Number(evento.vagas || 0) -
+                                    Number(evento.totalInscritos || 1)
+                                );
+
+                                return (
+                                    <EventCard
+                                        key={evento.id}
+                                        titulo={evento.titulo}
+                                        categoria={evento.categoria}
+                                        data={evento.data}
+                                        horario={evento.horario}
+                                        local={evento.local}
+                                        vagas={vagasDisponiveis}
+                                        descricao={evento.descricao}
+                                        favorito={favoritos.some(
+                                            (id) => Number(id) === Number(evento.id)
+                                        )}
+                                        inscrito={true}
+                                        aoFavoritar={() => aoFavoritar(Number(evento.id))}
+                                        aoInscrever={() => aoInscrever(Number(evento.id))}
+                                    />
+                                );
+                            })}
                         </section>
                     </>
                 )}

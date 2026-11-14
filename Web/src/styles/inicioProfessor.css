@@ -1,16 +1,15 @@
 
+
 /* ==========================================
    INÍCIO DO PROFESSOR
    Estilos do painel principal do professor.
    ========================================== */
-
 
 /* ---------- ESTRUTURA PRINCIPAL ---------- */
 
 .inicio-professor {
     width: 100%;
 }
-
 
 /* ---------- BOAS-VINDAS E BOTÃO DE CADASTRO ---------- */
 
@@ -57,7 +56,6 @@
 .professor-botao-principal:hover {
     background: var(--vermelho-escuro);
 }
-
 
 /* ---------- CARDS DE RESUMO ---------- */
 
@@ -110,7 +108,6 @@
     font-size: 1.7rem;
 }
 
-
 /* ---------- SEÇÕES DO PAINEL ---------- */
 
 .professor-secao {
@@ -129,7 +126,6 @@
     color: var(--texto);
     font-size: 1.25rem;
 }
-
 
 /* ---------- ATALHOS DE NAVEGAÇÃO ---------- */
 
@@ -181,21 +177,7 @@
     font-size: 1.5rem;
 }
 
-
 /* ---------- PRÓXIMOS EVENTOS ---------- */
-
-.professor-link-ver {
-    border: none;
-    background: transparent;
-    color: var(--vermelho);
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.professor-link-ver:hover {
-    text-decoration: underline;
-}
 
 .professor-lista-proximos {
     overflow: hidden;
@@ -260,7 +242,6 @@
     white-space: nowrap;
 }
 
-
 /* ---------- MENSAGENS E ESTADOS ---------- */
 
 .professor-mensagem {
@@ -286,7 +267,6 @@
 .professor-erro {
     color: var(--vermelho);
 }
-
 
 /* ---------- RESPONSIVIDADE ---------- */
 

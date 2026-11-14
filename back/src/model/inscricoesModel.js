@@ -1,4 +1,3 @@
-
 /* ==========================================
    MODEL: INSCRIÇÕES
    Guarda as consultas SQL usadas para cadastrar,

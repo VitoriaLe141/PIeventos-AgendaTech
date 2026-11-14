@@ -1,7 +1,7 @@
 /* ==========================================
    PÁGINA: Cadastrar evento
-   Exibe o formulário usado pelo professor para
-   cadastrar um novo evento.
+   Exibe o formulário usado pelo professor
+   para cadastrar um novo evento.
    ========================================== */
 
 import { useState } from "react";
@@ -19,9 +19,17 @@ function CadastrarEvento({ usuario, aoNavegar, aoSair }) {
     const [descricao, setDescricao] = useState("");
     const [categoria, setCategoria] = useState("");
     const [data, setData] = useState("");
-    const [horario, setHorario] = useState("");
+    const [hora, setHora] = useState("");
+    const [minutos, setMinutos] = useState("");
     const [local, setLocal] = useState("");
     const [vagas, setVagas] = useState("");
+
+    // Define a data mínima como o dia atual
+    const hoje = new Date();
+
+    const dataMinima = `${hoje.getFullYear()}-${String(
+        hoje.getMonth() + 1
+    ).padStart(2, "0")}-${String(hoje.getDate()).padStart(2, "0")}`;
 
     // Controla a exibição do modal de sucesso
     const [modalAberto, setModalAberto] = useState(false);
@@ -32,6 +40,9 @@ function CadastrarEvento({ usuario, aoNavegar, aoSair }) {
     // Envia os dados do evento para o backend
     async function cadastrarEvento(e) {
         e.preventDefault();
+
+        // Junta hora e minutos no formato HH:MM
+        const horario = `${hora}:${minutos}`;
 
         // Organiza as informações preenchidas no formulário
         const novoEvento = {
@@ -73,7 +84,8 @@ function CadastrarEvento({ usuario, aoNavegar, aoSair }) {
             setDescricao("");
             setCategoria("");
             setData("");
-            setHorario("");
+            setHora("");
+            setMinutos("");
             setLocal("");
             setVagas("");
 
@@ -163,22 +175,55 @@ function CadastrarEvento({ usuario, aoNavegar, aoSair }) {
                             <input
                                 id="data"
                                 type="date"
+                                min={dataMinima}
                                 value={data}
                                 onChange={(e) => setData(e.target.value)}
                                 required
                             />
                         </div>
 
-                        {/* Campo para o horário do evento */}
-                        <div>
-                            <label htmlFor="horario">Horário</label>
-                            <input
-                                id="horario"
-                                type="time"
-                                value={horario}
-                                onChange={(e) => setHorario(e.target.value)}
-                                required
-                            />
+                        {/* Campos para selecionar o horário */}
+                        <div className="campo-horario">
+                            <label>Horário</label>
+
+                            <div className="horario-seletores">
+
+                                <select
+                                    aria-label="Hora do evento"
+                                    value={hora}
+                                    onChange={(e) => setHora(e.target.value)}
+                                    required
+                                >
+                                    <option value="">Hora</option>
+
+                                    {Array.from({ length: 24 }, (_, i) => (
+                                        <option
+                                            key={i}
+                                            value={String(i).padStart(2, "0")}
+                                        >
+                                            {String(i).padStart(2, "0")}
+                                        </option>
+                                    ))}
+                                </select>
+
+                                <span>:</span>
+
+                                <select
+                                    aria-label="Minutos do evento"
+                                    value={minutos}
+                                    onChange={(e) => setMinutos(e.target.value)}
+                                    required
+                                >
+                                    <option value="">Minutos</option>
+
+                                    {Array.from({ length: 60 }, (_, i) => (
+                                        <option key={i} value={String(i).padStart(2, "0")}>
+                                            {String(i).padStart(2, "0")}
+                                        </option>
+                                    ))}
+                                </select>
+
+                            </div>
                         </div>
 
                         {/* Campo para o local do evento */}

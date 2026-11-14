@@ -1,16 +1,21 @@
 
-
 import { db } from "../databases/DatabaseContext.js";
 
 export const tableName = "eventos";
 
-// Busca todos os eventos ativos
+// Busca todos os eventos ativos e calcula as vagas disponíveis
 export async function Get() {
     try {
         const results = await db.execute(
-            `SELECT * FROM ${tableName}
-             WHERE actived = 1
-             ORDER BY id`
+            `SELECT eventos.*,
+                eventos.vagas - (
+                    SELECT COUNT(*)
+                    FROM inscricoes
+                    WHERE inscricoes.idevento = eventos.id
+                ) AS vagasDisponiveis
+             FROM ${tableName}
+             WHERE eventos.actived = 1
+             ORDER BY eventos.id`
         );
 
         return {
@@ -28,12 +33,18 @@ export async function Get() {
     }
 }
 
-// Busca um evento pelo ID
+// Busca um evento pelo ID e calcula as vagas disponíveis
 export async function GetById(id) {
     try {
         const results = await db.execute(
-            `SELECT * FROM ${tableName}
-             WHERE id = ? AND actived = 1`,
+            `SELECT eventos.*,
+                eventos.vagas - (
+                    SELECT COUNT(*)
+                    FROM inscricoes
+                    WHERE inscricoes.idevento = eventos.id
+                ) AS vagasDisponiveis
+             FROM ${tableName}
+             WHERE eventos.id = ? AND eventos.actived = 1`,
             [id]
         );
 
@@ -50,13 +61,20 @@ export async function GetById(id) {
     }
 }
 
-// Busca somente os eventos do professor
+// Busca os eventos do professor e calcula as vagas disponíveis
 export async function GetByProfessor(idprofessor) {
     try {
         const results = await db.execute(
-            `SELECT * FROM ${tableName}
-             WHERE idprofessor = ? AND actived = 1
-             ORDER BY id DESC`,
+            `SELECT eventos.*,
+                eventos.vagas - (
+                    SELECT COUNT(*)
+                    FROM inscricoes
+                    WHERE inscricoes.idevento = eventos.id
+                ) AS vagasDisponiveis
+             FROM ${tableName}
+             WHERE eventos.idprofessor = ?
+             AND eventos.actived = 1
+             ORDER BY eventos.id DESC`,
             [idprofessor]
         );
 

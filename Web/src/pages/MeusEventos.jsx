@@ -1,4 +1,5 @@
 
+
 /* ==========================================
    PÁGINA: Meus eventos
    Lista os eventos do professor e permite editar
@@ -6,7 +7,17 @@
    ========================================== */
 
 import { useEffect, useState, useCallback } from "react";
+
 import "../styles/paginasInternas.css";
+
+// Converte a data para o formato dia/mês/ano
+function formatarData(data) {
+    if (!data) return "";
+
+    const [ano, mes, dia] = data.split("T")[0].split("-");
+
+    return `${dia}/${mes}/${ano}`;
+}
 
 // Monta a página com os eventos cadastrados pelo professor.
 function MeusEventos() {
@@ -35,17 +46,15 @@ function MeusEventos() {
     // Controla a exibição do modal de mensagem
     const [modalAberto, setModalAberto] = useState(false);
 
-    // Guarda o título e a mensagem que aparecem no modal
+    // Guarda o título e a mensagem do modal
     const [tituloModal, setTituloModal] = useState("");
     const [mensagemModal, setMensagemModal] = useState("");
 
-    // Controla se o modal está pedindo confirmação de exclusão
+    // Controla a confirmação de exclusão
     const [confirmandoExclusao, setConfirmandoExclusao] = useState(false);
-
-    // Guarda o ID do evento que será excluído
     const [idEventoExcluir, setIdEventoExcluir] = useState(null);
 
-    // Busca os eventos no servidor e retorna os dados encontrados
+    // Busca os eventos no servidor
     async function obterEventos() {
         const resposta = await fetch(
             "http://localhost:3000/eventos/professor/meus",
@@ -56,10 +65,8 @@ function MeusEventos() {
             }
         );
 
-        // Converte a resposta do servidor para JSON
         const resultado = await resposta.json();
 
-        // Verifica se ocorreu algum erro na busca
         if (!resposta.ok) {
             throw new Error(
                 resultado.message || "Não foi possível carregar os eventos."
@@ -77,7 +84,6 @@ function MeusEventos() {
             try {
                 const dados = await obterEventos();
 
-                // Atualiza a tela somente se a página ainda estiver aberta
                 if (paginaAtiva) {
                     setEventos(dados);
                     setErro("");
@@ -97,13 +103,12 @@ function MeusEventos() {
 
         carregarEventos();
 
-        // Impede atualizações caso o componente seja desmontado
         return () => {
             paginaAtiva = false;
         };
     }, []);
 
-    // Atualiza a lista depois de editar ou excluir um evento
+    // Atualiza a lista depois de editar ou excluir
     const buscarEventos = useCallback(async () => {
         try {
             const dados = await obterEventos();
@@ -116,7 +121,7 @@ function MeusEventos() {
         }
     }, []);
 
-    // Atualiza os campos do formulário de edição
+    // Atualiza os campos do formulário
     function aoMudarCampo(evento) {
         const { name, value } = evento.target;
 
@@ -134,14 +139,14 @@ function MeusEventos() {
             titulo: evento.titulo || "",
             descricao: evento.descricao || "",
             categoria: evento.categoria || "",
-            data: evento.data || "",
+            data: evento.data ? evento.data.split("T")[0] : "",
             horario: evento.horario || "",
             local: evento.local || "",
             vagas: evento.vagas || ""
         });
     }
 
-    // Cancela a edição e limpa os campos do formulário
+    // Cancela a edição e limpa os campos
     function cancelarEdicao() {
         setEventoEditando(null);
 
@@ -176,22 +181,17 @@ function MeusEventos() {
                 }
             );
 
-            // Converte a resposta do servidor para JSON
             const resultado = await resposta.json();
 
-            // Verifica se a atualização apresentou algum erro
             if (!resposta.ok) {
                 alert(resultado.message || "Não foi possível atualizar o evento.");
                 return;
             }
 
-            // Fecha o formulário de edição
             cancelarEdicao();
 
-            // Atualiza a lista com os dados modificados
             await buscarEventos();
 
-            // Prepara e exibe o modal de sucesso
             setConfirmandoExclusao(false);
             setTituloModal("Evento atualizado!");
             setMensagemModal("As alterações do seu evento foram salvas com sucesso.");
@@ -229,24 +229,19 @@ function MeusEventos() {
                 }
             );
 
-            // Converte a resposta do servidor para JSON
             const resultado = await resposta.json();
 
-            // Verifica se a exclusão apresentou algum erro
             if (!resposta.ok) {
                 alert(resultado.message || "Não foi possível excluir o evento.");
                 return;
             }
 
-            // Cancela a edição caso o evento excluído estivesse sendo editado
             if (eventoEditando === idEventoExcluir) {
                 cancelarEdicao();
             }
 
-            // Atualiza a lista depois da exclusão
             await buscarEventos();
 
-            // Prepara o modal de sucesso
             setConfirmandoExclusao(false);
             setTituloModal("Evento excluído!");
             setMensagemModal("O evento foi excluído com sucesso.");
@@ -274,24 +269,26 @@ function MeusEventos() {
                 <p>Visualize e gerencie os eventos que você cadastrou.</p>
             </header>
 
-            {/* Mensagem exibida durante o carregamento */}
+            {/* Mensagem de carregamento */}
             {carregando && (
-                <p className="sem-eventos">Carregando seus eventos...</p>
+                <p className="sem-eventos">
+                    Carregando seus eventos...
+                </p>
             )}
 
-            {/* Mensagem exibida caso ocorra um erro */}
+            {/* Mensagem de erro */}
             {!carregando && erro && (
                 <p className="sem-eventos">{erro}</p>
             )}
 
-            {/* Mensagem exibida quando o professor ainda não possui eventos */}
+            {/* Mensagem quando não existem eventos */}
             {!carregando && !erro && eventos.length === 0 && (
                 <p className="sem-eventos">
                     Você ainda não cadastrou nenhum evento.
                 </p>
             )}
 
-            {/* Lista dos eventos cadastrados pelo professor */}
+            {/* Lista dos eventos */}
             {!carregando && !erro && eventos.length > 0 && (
                 <div className="lista-meus-eventos">
 
@@ -301,7 +298,7 @@ function MeusEventos() {
                             key={evento.id}
                         >
 
-                            {/* Formulário de edição do evento */}
+                            {/* Formulário de edição */}
                             {eventoEditando === evento.id ? (
 
                                 <form onSubmit={salvarEdicao}>
@@ -310,9 +307,10 @@ function MeusEventos() {
 
                                     <div className="formulario-editar-evento">
 
-                                        {/* Campo para o título */}
+                                        {/* Título */}
                                         <div>
                                             <label htmlFor="titulo">Título</label>
+
                                             <input
                                                 id="titulo"
                                                 type="text"
@@ -323,9 +321,10 @@ function MeusEventos() {
                                             />
                                         </div>
 
-                                        {/* Campo para a descrição */}
+                                        {/* Descrição */}
                                         <div>
                                             <label htmlFor="descricao">Descrição</label>
+
                                             <textarea
                                                 id="descricao"
                                                 name="descricao"
@@ -335,9 +334,10 @@ function MeusEventos() {
                                             />
                                         </div>
 
-                                        {/* Campo para selecionar a categoria */}
+                                        {/* Categoria */}
                                         <div>
                                             <label htmlFor="categoria">Categoria</label>
+
                                             <select
                                                 id="categoria"
                                                 name="categoria"
@@ -352,9 +352,10 @@ function MeusEventos() {
                                             </select>
                                         </div>
 
-                                        {/* Campo para a data */}
+                                        {/* Data */}
                                         <div>
                                             <label htmlFor="data">Data</label>
+
                                             <input
                                                 id="data"
                                                 type="date"
@@ -365,9 +366,10 @@ function MeusEventos() {
                                             />
                                         </div>
 
-                                        {/* Campo para o horário */}
+                                        {/* Horário */}
                                         <div>
                                             <label htmlFor="horario">Horário</label>
+
                                             <input
                                                 id="horario"
                                                 type="time"
@@ -378,9 +380,10 @@ function MeusEventos() {
                                             />
                                         </div>
 
-                                        {/* Campo para o local */}
+                                        {/* Local */}
                                         <div>
                                             <label htmlFor="local">Local</label>
+
                                             <input
                                                 id="local"
                                                 type="text"
@@ -391,9 +394,10 @@ function MeusEventos() {
                                             />
                                         </div>
 
-                                        {/* Campo para a quantidade de vagas */}
+                                        {/* Quantidade de vagas */}
                                         <div>
                                             <label htmlFor="vagas">Quantidade de vagas</label>
+
                                             <input
                                                 id="vagas"
                                                 type="number"
@@ -407,8 +411,9 @@ function MeusEventos() {
 
                                     </div>
 
-                                    {/* Botões para salvar ou cancelar a edição */}
+                                    {/* Botões de edição */}
                                     <div className="acoes-editar-evento">
+
                                         <button
                                             type="submit"
                                             className="btn-salvar-evento"
@@ -423,6 +428,7 @@ function MeusEventos() {
                                         >
                                             Cancelar
                                         </button>
+
                                     </div>
 
                                 </form>
@@ -441,16 +447,34 @@ function MeusEventos() {
                                         {evento.descricao}
                                     </p>
 
-                                    {/* Informações principais do evento */}
+                                    {/* Informações do evento */}
                                     <div className="meu-evento-informacoes">
-                                        <p><strong>Data:</strong> {evento.data}</p>
-                                        <p><strong>Horário:</strong> {evento.horario}</p>
-                                        <p><strong>Local:</strong> {evento.local}</p>
-                                        <p><strong>Vagas:</strong> {evento.vagas}</p>
+
+                                        <p>
+                                            <strong>Data:</strong>{" "}
+                                            {formatarData(evento.data)}
+                                        </p>
+
+                                        <p>
+                                            <strong>Horário:</strong>{" "}
+                                            {evento.horario}
+                                        </p>
+
+                                        <p>
+                                            <strong>Local:</strong>{" "}
+                                            {evento.local}
+                                        </p>
+
+                                        <p>
+                                            <strong>Vagas:</strong>{" "}
+                                            {evento.vagas}
+                                        </p>
+
                                     </div>
 
-                                    {/* Botões de edição e exclusão */}
+                                    {/* Botões de ação */}
                                     <div className="acoes-meu-evento">
+
                                         <button
                                             type="button"
                                             className="btn-editar-evento"
@@ -466,6 +490,7 @@ function MeusEventos() {
                                         >
                                             Excluir evento
                                         </button>
+
                                     </div>
                                 </>
 
@@ -477,8 +502,9 @@ function MeusEventos() {
                 </div>
             )}
 
-            {/* Modal de confirmação e mensagens de sucesso */}
+            {/* Modal de confirmação e mensagens */}
             {modalAberto && (
+
                 <div className="modal-fundo">
 
                     <div
@@ -490,17 +516,20 @@ function MeusEventos() {
 
                         {/* Ícone do modal */}
                         <div className={`modal-icone ${confirmandoExclusao ? "confirmacao" : "sucesso"}`}>
-                            <span>{confirmandoExclusao ? "!" : "✓"}</span>
+                            <span>
+                                {confirmandoExclusao ? "!" : "✓"}
+                            </span>
                         </div>
 
                         {/* Título e mensagem */}
                         <h2 id="titulo-modal">{tituloModal}</h2>
                         <p>{mensagemModal}</p>
 
-                        {/* Botões de confirmação ou fechamento */}
+                        {/* Botões do modal */}
                         {confirmandoExclusao ? (
 
                             <div className="acoes-editar-evento">
+
                                 <button
                                     type="button"
                                     className="btn-cancelar-edicao"
@@ -516,6 +545,7 @@ function MeusEventos() {
                                 >
                                     Sim, excluir
                                 </button>
+
                             </div>
 
                         ) : (
@@ -530,7 +560,9 @@ function MeusEventos() {
                         )}
 
                     </div>
+
                 </div>
+
             )}
 
         </section>

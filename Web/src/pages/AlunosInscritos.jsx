@@ -28,46 +28,7 @@ function AlunosInscritos() {
     const [erro, setErro] = useState("");
 
     // ==========================================
-    // BUSCAR ALUNOS INSCRITOS
-    // ==========================================
-
-    // Consulta os alunos inscritos nos eventos do professor conectado
-    async function buscarInscricoes() {
-        try {
-            setCarregando(true);
-            setErro("");
-
-            const resposta = await fetch(
-                "http://localhost:3000/inscricoes/professor/meus",
-                {
-                    headers: {
-                        "Authorization": `Bearer ${sessionStorage.getItem("token")}`
-                    }
-                }
-            );
-
-            const resultado = await resposta.json();
-
-            // Verifica se a consulta foi realizada corretamente
-            if (!resposta.ok) {
-                throw new Error(
-                    resultado.message || "Não foi possível carregar os inscritos."
-                );
-            }
-
-            // Guarda as inscrições retornadas pelo banco
-            setInscricoes(resultado.data || []);
-
-        } catch (error) {
-            console.log("Erro ao buscar alunos inscritos:", error);
-            setErro(error.message);
-        } finally {
-            setCarregando(false);
-        }
-    }
-
-    // ==========================================
-    // CARREGAR A PÁGINA
+    // CARREGAR OS DADOS
     // ==========================================
 
     // Busca as inscrições assim que a página é aberta
@@ -87,12 +48,14 @@ function AlunosInscritos() {
 
                 const resultado = await resposta.json();
 
+                // Verifica se a consulta foi realizada corretamente
                 if (!resposta.ok) {
                     throw new Error(
                         resultado.message || "Não foi possível carregar os inscritos."
                     );
                 }
 
+                // Guarda as inscrições retornadas pelo banco
                 if (ativo) {
                     setInscricoes(resultado.data || []);
                     setErro("");
@@ -103,6 +66,7 @@ function AlunosInscritos() {
                     console.log("Erro ao buscar alunos inscritos:", error);
                     setErro(error.message);
                 }
+
             } finally {
                 if (ativo) {
                     setCarregando(false);
@@ -116,16 +80,8 @@ function AlunosInscritos() {
         return () => {
             ativo = false;
         };
+
     }, []);
-
-    // ==========================================
-    // ATUALIZAR INSCRIÇÕES
-    // ==========================================
-
-    // Consulta novamente os dados quando o professor clicar em atualizar
-    function atualizarInscricoes() {
-        buscarInscricoes();
-    }
 
     // ==========================================
     // ORGANIZAR OS EVENTOS DO RESUMO
@@ -205,12 +161,12 @@ function AlunosInscritos() {
 
                 <article className="inscritos-resumo-card">
                     <span>Total de inscrições</span>
-                    <strong>{inscricoes.length}</strong>
+                    <strong>{carregando ? "—" : inscricoes.length}</strong>
                 </article>
 
                 <article className="inscritos-resumo-card">
                     <span>Eventos com inscritos</span>
-                    <strong>{eventos.length}</strong>
+                    <strong>{carregando ? "—" : eventos.length}</strong>
                 </article>
 
             </div>
@@ -249,16 +205,6 @@ function AlunosInscritos() {
                     </select>
                 </div>
 
-                {/* Atualiza os dados consultando novamente a API */}
-                <button
-                    type="button"
-                    className="btn-principal inscritos-atualizar"
-                    onClick={atualizarInscricoes}
-                    disabled={carregando}
-                >
-                    {carregando ? "Carregando..." : "Atualizar"}
-                </button>
-
             </section>
 
             {/* Informa quando os dados ainda estão sendo carregados */}
@@ -268,18 +214,10 @@ function AlunosInscritos() {
                 </p>
             )}
 
-            {/* Mostra o erro e permite tentar a consulta novamente */}
+            {/* Mostra uma mensagem caso ocorra algum erro */}
             {!carregando && erro && (
                 <div className="estado-vazio">
                     <p>{erro}</p>
-
-                    <button
-                        type="button"
-                        className="btn-principal btn-auto"
-                        onClick={atualizarInscricoes}
-                    >
-                        Tentar novamente
-                    </button>
                 </div>
             )}
 
