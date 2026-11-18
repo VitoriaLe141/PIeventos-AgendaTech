@@ -3,12 +3,10 @@
    AGENDA TECH - MENU LATERAL (SIDEBAR)
    ========================================== */
 
-/* Estrutura principal da barra lateral */
 .sidebar {
     width: 260px;
     height: 100vh;
     padding: 24px 18px;
-
     background-color: var(--branco);
 
     display: flex;
@@ -19,7 +17,6 @@
     left: 0;
 }
 
-/* Logo do AgendaTech */
 .sidebar-logo {
     width: 100%;
     margin-bottom: 35px;
@@ -31,23 +28,19 @@
     height: auto;
 }
 
-/* Informações do usuário */
 .sidebar-user {
     display: flex;
     align-items: center;
     gap: 12px;
-
     margin-bottom: 35px;
 }
 
-/* Foto de perfil */
 .sidebar-avatar {
     width: 48px;
     height: 48px;
     border-radius: 50%;
 }
 
-/* Nome e função do usuário */
 .sidebar-user-info h3 {
     font-size: 15px;
     color: var(--texto);
@@ -58,14 +51,12 @@
     color: var(--cinza-texto);
 }
 
-/* Navegação do menu */
 .sidebar-navigation {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-/* Links do menu */
 .sidebar-link {
     display: block;
     padding: 12px 14px;
@@ -81,20 +72,17 @@
     transition: background 0.2s, color 0.2s;
 }
 
-/* Efeito ao passar o mouse */
 .sidebar-link:hover {
     background-color: #fce8e8;
     color: var(--vermelho);
 }
 
-/* Página atualmente selecionada */
 .sidebar-link.active {
     background-color: #fce8e8;
     color: var(--vermelho);
     font-weight: 600;
 }
 
-/* Parte inferior da sidebar */
 .sidebar-footer {
     margin-top: auto;
     padding-top: 15px;
@@ -103,21 +91,19 @@
 
 
 /* ==========================================
-   AGENDA TECH - PÁGINA INICIAL
-   Estrutura e elementos principais
+   PÁGINA INICIAL
    ========================================== */
 
-/* Fundo cinza claro da página inteira */
 .pagina-inicial {
     min-height: 100vh;
     background-color: var(--cinza-fundo);
 }
 
-/* Área principal: deixa espaço para a sidebar */
 .conteudo {
     margin-left: 260px;
     padding: 32px;
 }
+
 
 /* ==========================================
    BOAS-VINDAS
@@ -134,11 +120,11 @@
     color: var(--cinza-texto);
 }
 
+
 /* ==========================================
    MENSAGENS DA PÁGINA
    ========================================== */
 
-/* Mensagem de nenhum evento encontrado */
 .sem-eventos {
     margin-top: 28px;
     font-size: 1rem;
@@ -147,10 +133,9 @@
 
 
 /* ==========================================
-   AGENDA TECH - CARDS DE EVENTOS
+   CARDS DE EVENTOS
    ========================================== */
 
-/* Lista que organiza os cards em colunas */
 .lista-eventos {
     margin-top: 28px;
 
@@ -159,7 +144,6 @@
     gap: 20px;
 }
 
-/* Cartão de cada evento */
 .event-card {
     padding: 20px;
 
@@ -172,7 +156,6 @@
     gap: 8px;
 }
 
-/* Etiqueta com a categoria */
 .event-categoria {
     align-self: flex-start;
     padding: 4px 10px;
@@ -186,62 +169,169 @@
     border-radius: 20px;
 }
 
-/* Textos de data, local e vagas */
 .event-info {
     font-size: 14px;
     color: var(--cinza-texto);
 }
 
-/* Mantém os botões alinhados no final dos cards */
 .event-card .btn-principal {
     margin-top: auto;
 }
 
 
 /* ==========================================
-   AGENDA TECH - FILTROS DE EVENTOS
+   FILTROS DE EVENTOS
    ========================================== */
 
-/* Linha que reúne a busca e os selects */
-.filtros {
+/* Card que reúne todos os filtros */
+.pagina-inicial .conteudo .filtros {
     margin-top: 28px;
+    margin-bottom: 28px;
+    padding: 20px;
 
+    background-color: var(--branco);
+    border: 1px solid var(--cinza-borda);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 14px;
+}
+
+/* Organização individual dos campos */
+.pagina-inicial .filtro-campo {
     display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
 }
 
-/* Campo de busca */
-.filtro-busca {
-    flex: 1;
-    min-width: 220px;
-    padding: 12px 14px;
+/* Títulos dos filtros */
+.pagina-inicial .filtro-campo label {
+    display: block;
+    margin: 0;
+
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--texto);
+}
+
+/* Campo de pesquisa e seleções */
+.pagina-inicial .filtro-busca,
+.pagina-inicial .filtro-select {
+    display: block;
+
+    width: 100%;
+    min-width: 0;
+    height: 42px;
+    padding: 10px 12px;
 
     background-color: var(--branco);
     border: 1px solid var(--cinza-borda);
     border-radius: var(--raio);
 
-    font-size: 15px;
+    font-size: 14px;
     color: var(--texto);
 }
 
-/* Campos de seleção */
-.filtro-select {
-    padding: 12px 14px;
-
-    background-color: var(--branco);
-    border: 1px solid var(--cinza-borda);
-    border-radius: var(--raio);
-
-    font-size: 15px;
-    color: var(--texto);
-
+.pagina-inicial .filtro-select {
     cursor: pointer;
 }
 
-/* Borda vermelha quando o campo está selecionado */
-.filtro-busca:focus,
-.filtro-select:focus {
+/* Destaque ao selecionar um campo */
+.pagina-inicial .filtro-busca:focus,
+.pagina-inicial .filtro-select:focus {
     outline: none;
     border-color: var(--vermelho);
+}
+
+
+/* ==========================================
+   RESPONSIVIDADE
+   ========================================== */
+
+/* ==========================================
+   FILTROS DE EVENTOS
+   ========================================== */
+
+.pagina-inicial .conteudo .filtros {
+    margin-top: 28px;
+    margin-bottom: 28px;
+    padding: 20px;
+
+    background-color: var(--branco);
+    border: 1px solid var(--cinza-borda);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+
+    display: grid;
+
+    /* Pesquisa ocupa o espaço restante.
+       Categoria e ordenação ficam menores. */
+    grid-template-columns: minmax(220px, 1fr) 170px 170px;
+
+    gap: 14px;
+}
+
+.pagina-inicial .filtro-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.pagina-inicial .filtro-campo label {
+    display: block;
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--texto);
+}
+
+.pagina-inicial .filtro-busca,
+.pagina-inicial .filtro-select {
+    width: 100%;
+    min-width: 0;
+    height: 42px;
+    padding: 10px 12px;
+
+    background-color: var(--branco);
+    border: 1px solid var(--cinza-borda);
+    border-radius: var(--raio);
+
+    font-size: 14px;
+    color: var(--texto);
+}
+
+.pagina-inicial .filtro-select {
+    cursor: pointer;
+}
+
+.pagina-inicial .filtro-busca:focus,
+.pagina-inicial .filtro-select:focus {
+    outline: none;
+    border-color: var(--vermelho);
+}
+
+/* Responsividade */
+
+@media (max-width: 900px) {
+    .pagina-inicial .conteudo .filtros {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .pagina-inicial .filtro-pesquisa {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 600px) {
+    .pagina-inicial .conteudo .filtros {
+        grid-template-columns: 1fr;
+    }
+
+    .pagina-inicial .filtro-pesquisa {
+        grid-column: auto;
+    }
 }

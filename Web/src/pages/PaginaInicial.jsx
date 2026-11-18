@@ -14,7 +14,6 @@ import "../styles/paginaInicial.css";
 // Importação dos componentes
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
-import EventFilters from "../components/EventFilters";
 import EventCard from "../components/EventCard";
 
 // Converte a data para um formato que o JavaScript consegue ordenar
@@ -23,10 +22,9 @@ function converterData(data) {
         return null;
     }
 
-    // Remove possíveis informações de horário
     const dataLimpa = String(data).split("T")[0];
 
-    // Verifica se a data está no formato brasileiro: DD/MM/AAAA
+    // Formato brasileiro: DD/MM/AAAA
     if (dataLimpa.includes("/")) {
         const partes = dataLimpa.split("/");
 
@@ -39,7 +37,7 @@ function converterData(data) {
         }
     }
 
-    // Verifica se a data está no formato do banco: AAAA-MM-DD
+    // Formato do banco: AAAA-MM-DD
     if (dataLimpa.includes("-")) {
         const partes = dataLimpa.split("-");
 
@@ -110,31 +108,15 @@ function PaginaInicial({
 
     }, []);
 
-    // Atualiza o texto da busca
-    function aoMudarBusca(evento) {
-        setBusca(evento.target.value);
-    }
-
-    // Atualiza a categoria escolhida no filtro
-    function aoMudarCategoria(evento) {
-        setCategoria(evento.target.value);
-    }
-
-    // Atualiza a forma de ordenação dos eventos
-    function aoMudarOrdem(evento) {
-        setOrdem(evento.target.value);
-    }
-
-    // Identifica as categorias existentes nos eventos cadastrados
+    // Categorias fixas disponíveis para os alunos
+    // Elas aparecem mesmo quando não existem eventos cadastrados
     const categorias = [
-        ...new Set(
-            eventos
-                .map((evento) => String(evento.categoria || "").trim())
-                .filter((item) => item !== "")
-        )
-    ].sort((a, b) => a.localeCompare(b));
+        "Palestra",
+        "Workshop",
+        "Feira"
+    ];
 
-    // Filtra os eventos de acordo com a busca e a categoria
+    // Filtra os eventos pela busca e categoria
     const eventosFiltrados = eventos.filter((evento) => {
 
         const titulo = String(evento.titulo || "").toLowerCase();
@@ -203,16 +185,66 @@ function PaginaInicial({
 
                 <Header nome={usuario?.name || "Usuário"} />
 
-                {/* Busca, categoria e ordenação */}
-                <EventFilters
-                    busca={busca}
-                    aoMudarBusca={aoMudarBusca}
-                    categoria={categoria}
-                    aoMudarCategoria={aoMudarCategoria}
-                    categorias={categorias}
-                    ordem={ordem}
-                    aoMudarOrdem={aoMudarOrdem}
-                />
+                {/* Busca e filtros */}
+                <section className="filtros">
+
+                    {/* Campo de pesquisa */}
+                    <div className="filtro-campo filtro-pesquisa">
+                        <label htmlFor="busca-evento">
+                            Pesquisar evento
+                        </label>
+
+                        <input
+                            id="busca-evento"
+                            type="text"
+                            className="filtro-busca"
+                            placeholder="Digite o nome do evento..."
+                            value={busca}
+                            onChange={(evento) => setBusca(evento.target.value)}
+                        />
+                    </div>
+
+                    {/* Filtro por categoria */}
+                    <div className="filtro-campo">
+                        <label htmlFor="categoria-evento">
+                            Filtrar por categoria
+                        </label>
+
+                        <select
+                            id="categoria-evento"
+                            className="filtro-select"
+                            value={categoria}
+                            onChange={(evento) => setCategoria(evento.target.value)}
+                        >
+                            <option value="Todas">Todas as categorias</option>
+
+                            {categorias.map((item) => (
+                                <option key={item} value={item}>
+                                    {item}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {/* Ordenação */}
+                    <div className="filtro-campo">
+                        <label htmlFor="ordem-eventos">
+                            Ordenar por
+                        </label>
+
+                        <select
+                            id="ordem-eventos"
+                            className="filtro-select"
+                            value={ordem}
+                            onChange={(evento) => setOrdem(evento.target.value)}
+                        >
+                            <option value="data">Data mais próxima</option>
+                            <option value="nome">Nome (A-Z)</option>
+                            <option value="vagas">Mais vagas</option>
+                        </select>
+                    </div>
+
+                </section>
 
                 {/* Carregamento */}
                 {carregando && (
@@ -232,12 +264,12 @@ function PaginaInicial({
 
                         {eventosOrdenados.map((evento) => {
 
-                            // Verifica se o aluno está inscrito no evento
+                            // Verifica se o aluno está inscrito
                             const inscrito = inscricoes.some(
                                 (id) => Number(id) === Number(evento.id)
                             );
 
-                            // Atualiza as vagas exibidas quando o aluno se inscreve
+                            // Calcula as vagas exibidas
                             const vagasDisponiveis = Math.max(
                                 0,
                                 Number(evento.vagas || 0) - (inscrito ? 1 : 0)
