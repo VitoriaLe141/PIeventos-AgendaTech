@@ -1,18 +1,17 @@
+
 ### Variáveis Globais
 @baseUrl = http://localhost:3000
-@name = Aluno Teste
-@email = 1234567890123
-@password = 123456
 
-### Cadastro
-POST {{baseUrl}}/auth/register
-Content-Type: application/json
+##@name = Ana Silva
+##@email = 1234567890123
+##@password = 123456
 
-{
-    "name": "{{name}}",
-    "login": "{{email}}",
-    "password": "{{password}}"
-}
+@name = Marcelo Mendes
+@email = professor@fatec.sp.gov.br
+@password = 789012
+
+### 1. Cadastro
+# Não executar: Ana já é criada automaticamente pelo seedDatabase.js
 
 ### 2. Realizar Login (Gera o Token JWT)
 # @name login
@@ -23,12 +22,19 @@ Content-Type: application/json
     "login": "{{email}}",
     "password": "{{password}}"
 }
+
 ### Armazenar o token da resposta acima
-@authToken = {{login.response.body.token}}
+@authToken = {{login.response.body.data}}
 
 ### 3. Listar Usuários (Rota Protegida)
 GET {{baseUrl}}/users
 Authorization: Bearer {{authToken}}
 
 ###
-GET {{baseUrl}}/users/14
+
+GET {{baseUrl}}/users/1
+Authorization: Bearer {{authToken}}
+
+### 4. Consultar cadastro acadêmico dos alunos
+GET {{baseUrl}}/alunos
+Authorization: Bearer {{authToken}}

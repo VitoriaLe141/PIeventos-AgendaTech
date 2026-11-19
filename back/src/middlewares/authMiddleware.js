@@ -1,9 +1,9 @@
+
 /* ==========================================
    MIDDLEWARE: AUTENTICAÇÃO
    Verifica o token recebido e identifica o usuário
    que está fazendo a requisição.
    ========================================== */
-
 
 import jwt from "jsonwebtoken";
 
@@ -24,7 +24,9 @@ const validarToken = (req, res, next) => {
 
         // Guarda os dados do usuário autenticado
         req.userId = decoded.userId;
-        req.userRole = decoded.role;
+
+        // Padroniza o perfil para letras minúsculas
+        req.userRole = String(decoded.role).toLowerCase();
 
         next();
 

@@ -1,3 +1,4 @@
+
 /* ==========================================
    COMPONENTE PRINCIPAL: App
    Controla qual página será exibida.
@@ -28,6 +29,9 @@ function App() {
     // Guarda os dados do usuário que entrou
     const [usuario, setUsuario] = useState(null);
 
+    // Padroniza o perfil para evitar diferenças entre maiúsculas e minúsculas
+    const perfilUsuario = usuario?.role?.toLowerCase();
+
     // Controla qual página está aberta
     const [pagina, setPagina] = useState("inicio");
 
@@ -43,7 +47,7 @@ function App() {
     useEffect(() => {
 
         // Se não existir um aluno logado, não realiza a busca
-        if (!usuario || usuario.role !== "aluno") {
+        if (!usuario || perfilUsuario !== "aluno") {
             return;
         }
 
@@ -138,10 +142,8 @@ function App() {
                 setInscricoes([...inscricoes, idEvento]);
             }
 
-            // Não exibe notificação quando a inscrição é realizada ou cancelada.
-
         } catch (error) {
-            // Registra o erro no console e avisa caso o servidor não responda
+            // Registra o erro no console
             console.log("Erro ao alterar inscrição:", error);
             alert("Não foi possível conectar ao servidor.");
         }
@@ -189,7 +191,7 @@ function App() {
     // ÁREA DO PROFESSOR
     // ==========================================
 
-    if (usuario?.role === "professor") {
+    if (perfilUsuario === "professor") {
 
         // Abre a página de cadastro de eventos
         if (pagina === "cadastrar") {

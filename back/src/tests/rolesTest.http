@@ -1,8 +1,8 @@
 @host = http://localhost
-@port = 3500
+@port = 3000
 @endpoint = roles
 
-@url = {{host}}:{{port}}/{{endpoint}} 
+@url = {{host}}:{{port}}/{{endpoint}}
 
 ###
 GET {{url}}
@@ -17,13 +17,12 @@ GET {{url}}/email/provara022@fatec.com
 
 ###
 # inclui novos registros
-POST  {{url}}
+POST {{url}}
 Content-Type: application/json; charset=utf-8
 
 {
-      "role": "Admin"
-    }
-
+    "role": "Aluno"
+}
 ###
 
 PUT  {{url}}/2

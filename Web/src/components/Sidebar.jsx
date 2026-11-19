@@ -36,14 +36,17 @@ const linksProfessor = [
 function Sidebar({ paginaAtual, aoNavegar, aoSair, usuario }) {
 
   // Escolhe os links de acordo com o perfil do usuário
-  const links = usuario?.role === "professor"
+  const perfil = usuario?.role?.toLowerCase();
+
+  const links = perfil === "professor"
     ? linksProfessor
     : linksAluno;
 
   // Define o nome do perfil
-  const nomePerfil = usuario?.role === "professor"
+  const nomePerfil = perfil === "professor"
     ? "Professor"
     : "Aluno";
+
 
   // Troca de página sem recarregar o site
   function irParaPagina(evento, id) {

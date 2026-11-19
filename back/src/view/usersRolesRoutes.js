@@ -26,4 +26,6 @@ router.delete( `${endPoint}/:id`, (req,res)=>{ mycontroller.Delete(req,res) });
 router.post(`${endPoint}`,(req,res) => { mycontroller.Post(req,res)});
 // Atualiza uma relação entre usuário e perfil.
 router.put(`${endPoint}/:id`, (req,res) => { mycontroller.Put(req,res)} );
+
+
 export default router;
