@@ -1,3 +1,4 @@
+
 /* ==========================================
    CONEXÃO SQLITE
    Configura e abre o arquivo do banco SQLite.
@@ -23,11 +24,10 @@ const DB_PATH = path.join(
 );
 
 // Abre a conexão com o arquivo do banco SQLite.
-
 export const getDbConnection = async (forceRefresh = false) => {
 
-    const filename = DB_PATH ;
-    
+    const filename = DB_PATH;
+
     console.log('--------------------------------');
     console.log('Abrindo banco SQLite');
     console.log('DB_PATH:', filename);
@@ -35,26 +35,20 @@ export const getDbConnection = async (forceRefresh = false) => {
     console.log('Banco existe?', fs.existsSync(filename));
     console.log('--------------------------------');
 
-    // Se forceRefresh for true, apaga o banco existente
-    if (forceRefresh === true) {
-
-        if (fs.existsSync(filename)) {
-            fs.unlinkSync(filename);
-            console.log(`Banco de dados removido: ${filename}`);
-        }
-
-    } else {
-
-        // Se não for refresh, o banco obrigatoriamente deve existir
-        if (!fs.existsSync(filename)) {
-            throw new Error(`Banco de dados não encontrado: ${filename}`);
-        }
+    // Se forceRefresh for true, apaga o banco existente.
+    if (forceRefresh === true && fs.existsSync(filename)) {
+        fs.unlinkSync(filename);
+        console.log(`Banco de dados removido: ${filename}`);
     }
 
-    // Abre o banco existente ou cria um novo
-    // caso tenha sido apagado pelo forceRefresh
-    return open({
+    // Cria e abre o banco caso ele ainda não exista.
+    // Se já existir, apenas abre sem apagar os dados.
+    const db = await open({
         filename,
         driver: sqlite3.Database
     });
+
+    console.log('Conexão SQLite estabelecida com sucesso!');
+
+    return db;
 };
